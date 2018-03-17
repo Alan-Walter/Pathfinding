@@ -66,6 +66,8 @@
     <Compile Include="Assets\Scripts\CameraMove.cs" />
     <Compile Include="Assets\Scripts\GameConstants.cs" />
     <Compile Include="Assets\Scripts\GameStates.cs" />
+    <Compile Include="Assets\Scripts\GlobalFunctions.cs" />
+    <Compile Include="Assets\Scripts\GuiRectangle.cs" />
     <Compile Include="Assets\Scripts\ISelectObject.cs" />
     <Compile Include="Assets\Scripts\SelectGameObject.cs" />
     <Compile Include="Assets\Scripts\TerrainHeightMap.cs" />

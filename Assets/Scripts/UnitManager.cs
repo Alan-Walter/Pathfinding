@@ -9,7 +9,8 @@ public class UnitManager : MonoBehaviour {
 
     public static UnitManager Instance
     {
-        get {
+        get
+        {
             return instance;
         }
     }

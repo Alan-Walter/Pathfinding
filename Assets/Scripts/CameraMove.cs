@@ -33,7 +33,7 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameStates.gamePlayState != GamePlayState.Play || selectGameObject.IsSelectObject) return;
+        if (GameStates.gamePlayState != GamePlayState.Play || selectGameObject.IsSelectingObjects) return;
         mousePosition = Input.mousePosition;
         if (!Input.GetMouseButton(2))
         {

@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SelectGameObject : MonoBehaviour {
-
+    
     private List<ISelectObject> selectionList;
     private UnitManager unitManager;
     private Vector3 firstPoint;
-    private bool isSelectObject = false;
+    private bool isSelectingObjects = false;
 
-    public bool IsSelectObject
+    private GuiRectangle border;
+
+    public bool IsSelectingObjects
     {
         get
         {
-            return isSelectObject;
+            return isSelectingObjects;
         }
     }
 
@@ -21,6 +23,8 @@ public class SelectGameObject : MonoBehaviour {
     void Start () {
 	    unitManager = UnitManager.Instance;
         selectionList = new List<ISelectObject>();
+        border = new GuiRectangle(1, 1);
+        border.SetColor(Color.yellow);
 	}
 	
 	// Update is called once per frame
@@ -29,17 +33,27 @@ public class SelectGameObject : MonoBehaviour {
         if(Input.GetMouseButtonDown(0))
         {
             RaycastHit hit = GetHitFromCursor();
-            if(hit.transform != null && (hit.transform.tag == "Unit" || hit.transform.tag == "Terrain"))
+            if(hit.transform != null)
             {
-                isSelectObject = true;
-                firstPoint = Input.mousePosition;
+                if (hit.transform.tag == "Terrain")
+                {
+                    isSelectingObjects = true;
+                    firstPoint = Input.mousePosition;
+                }
+                else if(hit.transform.tag == "Unit")
+                {
+                    ClearSelectObjects();
+                    Unit unit= hit.transform.GetComponent<Unit>();
+                    selectionList.Add(unit);
+                    unit.OnSelectObject();
+                }
             }
         }
-        if(isSelectObject && Input.GetMouseButtonUp(0))
+        if(isSelectingObjects && Input.GetMouseButtonUp(0))
         {
             ClearSelectObjects();
             SelectUnitsInRectangle(firstPoint, Input.mousePosition);
-            isSelectObject = false;
+            isSelectingObjects = false;
         }
 	}
 
@@ -59,8 +73,32 @@ public class SelectGameObject : MonoBehaviour {
 
     private void SelectUnitsInRectangle(Vector3 first, Vector3 second)
     {
-        first.z = Camera.main.transform.position.y;
-        second.z = Camera.main.transform.position.y;
-        Debug.Log(first.ToString() + " кек " + second.ToString());
+        if (second.x < first.x)
+            GlobalFunctions.Swap(ref first.x, ref second.x);
+        if(second.y > first.y)
+            GlobalFunctions.Swap(ref first.y, ref second.y);
+        Rect rect = GetRectangle(first, second);
+        foreach(Unit unit in unitManager.GetUnitList())
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
+            screenPos.y = Screen.height - screenPos.y;
+            if (rect.Contains(screenPos))
+            {
+                selectionList.Add(unit);
+                unit.OnSelectObject();
+            }
+        }
+    }
+
+    private static Rect GetRectangle(Vector3 first, Vector3 second)
+    {
+        float width = second.x - first.x;
+        float height = (Screen.height - second.y) - (Screen.height - first.y);
+        return new Rect(first.x, Screen.height - first.y, width, height);
+    }
+
+    void OnGUI() {
+        if(isSelectingObjects)
+            border.DrawBorderTexture(GetRectangle(firstPoint, Input.mousePosition), new Color(255, 184, 65), GameConstants.BorderThickness);
     }
 }

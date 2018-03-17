@@ -21,7 +21,8 @@ public class Unit : MonoBehaviour, ISelectObject {
 
     private void OnDestroy()
     {
-        UnitManager.Instance.DeleteUnit(this);
+        if(UnitManager.Instance != null)
+            UnitManager.Instance.DeleteUnit(this);
     }
 
     public void OnSelectObject()    {
