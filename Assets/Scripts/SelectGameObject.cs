@@ -8,6 +8,7 @@ public class SelectGameObject : MonoBehaviour {
     private UnitManager unitManager;
     private Vector3 firstPoint;
     private bool isSelectingObjects = false;
+    public GameObject targetPoint;
 
     private GuiRectangle border;
 
@@ -49,6 +50,21 @@ public class SelectGameObject : MonoBehaviour {
                 }
             }
         }
+        else
+        if(Input.GetMouseButtonDown(1) && selectionList.Count != 0)
+        {
+            RaycastHit hit = GetHitFromCursor();
+            if (hit.transform != null)
+            {
+                if (hit.transform.tag == "Terrain")
+                {
+                    GameObject target = Instantiate(targetPoint, hit.point, new Quaternion()) as GameObject;
+                    TargetPoint point = target.GetComponent<TargetPoint>();
+                    selectionList.ForEach(x => x.OnSetTarget(point));
+                }
+            }
+        }
+        
         if(isSelectingObjects && Input.GetMouseButtonUp(0))
         {
             ClearSelectObjects();

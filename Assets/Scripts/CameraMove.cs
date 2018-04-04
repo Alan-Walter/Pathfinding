@@ -26,7 +26,7 @@ public class CameraMove : MonoBehaviour
         sceneCamera = Camera.main;  //  указываем на главную камеру сцены
         basicCameraRotation = sceneCamera.transform.rotation;  //  запоминаем углы камеры
         CalcMoveAngles();  //  вычисляем перемещение по сторонам относительно угла поворота камеры
-        terrainHeightMap = GameObject.FindObjectOfType<TerrainHeightMap>();
+        terrainHeightMap = TerrainHeightMap.Instance;
         selectGameObject = GetComponent<SelectGameObject>();  //  получаем объект SelectGameObject
     }
 
