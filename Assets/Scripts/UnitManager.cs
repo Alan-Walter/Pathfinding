@@ -4,20 +4,13 @@ using System.Collections.Generic;
 
 public class UnitManager : MonoBehaviour {
 
-    private static UnitManager instance;
     private List<Unit> unitList;
 
-    public static UnitManager Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
+    public static UnitManager Instance { get; private set; }
 
     void Awake()
     {
-        instance = this;
+        Instance = this;
         unitList = new List<Unit>();
     }
 

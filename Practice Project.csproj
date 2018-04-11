@@ -70,9 +70,12 @@
     <Compile Include="Assets\Scripts\GlobalFunctions.cs" />
     <Compile Include="Assets\Scripts\GuiRectangle.cs" />
     <Compile Include="Assets\Scripts\ISelectObject.cs" />
+    <Compile Include="Assets\Scripts\IUsedNavMesh.cs" />
+    <Compile Include="Assets\Scripts\PriorityQueue.cs" />
     <Compile Include="Assets\Scripts\SelectGameObject.cs" />
     <Compile Include="Assets\Scripts\TargetPoint.cs" />
     <Compile Include="Assets\Scripts\TerrainHeightMap.cs" />
+    <Compile Include="Assets\Scripts\TerrainNavMesh.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\UnitManager.cs" />
     <Compile Include="Assets\Scripts\UnitMove.cs" />

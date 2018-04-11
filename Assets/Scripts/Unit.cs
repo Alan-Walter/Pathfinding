@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour, ISelectObject {
     private Color SelectColor = Color.cyan;
     private Color DeselectColor = Color.white;
     private Renderer render;
+    private UnitMove unitMove;
 
     private TargetPoint targetPoint;
 
@@ -14,6 +15,7 @@ public class Unit : MonoBehaviour, ISelectObject {
     void Start () {
         UnitManager.Instance.AddUnit(this);
         render = GetComponent<Renderer>();
+        unitMove = GetComponent<UnitMove>();
 	}
 	
 	// Update is called once per frame
@@ -41,5 +43,6 @@ public class Unit : MonoBehaviour, ISelectObject {
             targetPoint.DeleteLink();
         targetPoint = point;
         targetPoint.AddLink();
+        unitMove.SetMovePosition(targetPoint.Position);
     }
 }
