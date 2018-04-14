@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class TerrainHeightMap : MonoBehaviour {
-    private int width = 1024;  //  x, ширина мира
-    private int length = 1024;  //  z, длина мира
-    private int height = 128;  //  y, высота мира
+    private int width = 32;  //  x, ширина мира
+    private int length = 32;  //  z, длина мира
+    private int height = 8;  //  y, высота мира
     private float scale = 1.70f;  //  масштабирование, коэффициент при расчёте карты высот
 
     private Terrain terrain;
@@ -34,12 +34,9 @@ public class TerrainHeightMap : MonoBehaviour {
         }
     }
 
-    public float [,] HeightMap
+    public float GetHeight(int x, int y)
     {
-        get
-        {
-            return terrain.terrainData.GetHeights(0, 0, width, length);
-        }
+        return terrain.terrainData.GetHeight(x, y);
     }
 
     void Awake()
@@ -50,7 +47,7 @@ public class TerrainHeightMap : MonoBehaviour {
     void Start () {
        
         terrain = GetComponent<Terrain>();  //  находим террейн
-        terrain.terrainData = GetTerrainData(terrain.terrainData);  //  присваиваем данные о террейне
+        //terrain.terrainData = GetTerrainData(terrain.terrainData);  //  присваиваем данные о террейне
     }
 	
 

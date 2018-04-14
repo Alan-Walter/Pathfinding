@@ -4,18 +4,18 @@ using System;
 
 public class Unit : MonoBehaviour, ISelectObject {
 
-    private Color SelectColor = Color.cyan;
-    private Color DeselectColor = Color.white;
-    private Renderer render;
-    private UnitMove unitMove;
+    //private Color SelectColor = Color.cyan;
+    //private Color DeselectColor = Color.white;
+    //private Renderer render;
+    private UnitNavMeshAgent unitMove;
 
     private TargetPoint targetPoint;
 
     // Use this for initialization
     void Start () {
         UnitManager.Instance.AddUnit(this);
-        render = GetComponent<Renderer>();
-        unitMove = GetComponent<UnitMove>();
+        //render = GetComponent<Renderer>();
+        unitMove = GetComponent<UnitNavMeshAgent>();
 	}
 	
 	// Update is called once per frame
@@ -30,11 +30,11 @@ public class Unit : MonoBehaviour, ISelectObject {
     }
 
     public void OnSelectObject()    {
-        render.material.color = SelectColor;
+        //render.material.color = SelectColor;
     }
 
     public void OnDeselectObject()  {
-        render.material.color = DeselectColor;
+        //render.material.color = DeselectColor;
     }
 
     public void OnSetTarget(TargetPoint point)
