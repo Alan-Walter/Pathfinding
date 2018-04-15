@@ -9,6 +9,7 @@ public class SelectGameObject : MonoBehaviour {
     private Vector3 firstPoint;
     private bool isSelectingObjects = false;
     public GameObject targetPoint;
+    public GameObject unitSpawn;
 
     private GuiRectangle border;
 
@@ -70,6 +71,10 @@ public class SelectGameObject : MonoBehaviour {
             ClearSelectObjects();
             SelectUnitsInRectangle(firstPoint, Input.mousePosition);
             isSelectingObjects = false;
+        }
+        if(Input.GetKey(KeyCode.S))
+        {
+            GameObject target = Instantiate(unitSpawn, Camera.main.transform.position, new Quaternion()) as GameObject;
         }
 	}
 

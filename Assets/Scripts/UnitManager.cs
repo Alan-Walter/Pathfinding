@@ -8,6 +8,8 @@ public class UnitManager : MonoBehaviour {
 
     public static UnitManager Instance { get; private set; }
 
+    public int Count;
+
     void Awake()
     {
         Instance = this;
@@ -27,6 +29,7 @@ public class UnitManager : MonoBehaviour {
     public void AddUnit(Unit unit)
     {
         unitList.Add(unit);
+        Count = unitList.Count;
     }
 
     public void DeleteUnit(Unit unit)

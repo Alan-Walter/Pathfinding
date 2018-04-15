@@ -3,48 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class TerrainNavMesh : MonoBehaviour {
-
-    struct NavPosition : IComparable
-    {
-        public int x, z, order;
-        public float weight;
-        public object oldPoint;
-
-        public int CompareTo(object obj)
-        {
-            if (obj == null || this.GetType() != obj.GetType()) return -1;
-            NavPosition b = (NavPosition)obj;
-            if (this.weight < b.weight) return 1;
-            else if (this.weight == b.weight) return 0;
-            return -1;
-        }
-
-        public NavPosition(int x, int z, int order)
-        {
-            this.x = x;
-            this.z = z;
-            this.order = order;
-            weight = 0;
-            oldPoint = null;
-        }
-
-        public override bool Equals(object obj)
-        {
-            NavPosition temp = (NavPosition)obj;
-            if (this.x == temp.x && this.z == temp.z) return true;
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-    };
+public class TerrainNavGrid : MonoBehaviour {
 
     private const int MinDistance = 3; 
     private bool[,] usedCell;
-    public static TerrainNavMesh Instance { get; private set; }
+    public static TerrainNavGrid Instance { get; private set; }
     private sbyte[,] moveArray = {
         { -1, -1 },
         { 0, -1 },
@@ -90,14 +53,15 @@ public class TerrainNavMesh : MonoBehaviour {
         usedCell[(int)(newPosition.x), (int)(newPosition.z)] = true;
     }
 
-    public List<Vector3> GetMovePath(INavMeshMove moveObject, Vector3 finishPosition)
+    public List<Vector3> GetMovePath(INavGridMove moveObject, Vector3 finishPosition)
     {
         bool find = false;
         int fX = (int)finishPosition.x, fZ = (int)finishPosition.z;
         List<Vector3> result = new List<Vector3>();
-        PriorityQueue<NavPosition> priorityQueue = new PriorityQueue<NavPosition>();
+        if (usedCell[(int)finishPosition.x, (int)finishPosition.z]) return result;
+        PriorityQueue<NavGridPoint> priorityQueue = new PriorityQueue<NavGridPoint>();
         bool[,] scanned = new bool[TerrainHeightMap.Instance.Width, TerrainHeightMap.Instance.Length];
-        NavPosition position = new NavPosition((int)moveObject.Position.x, (int)moveObject.Position.z, 0);
+        NavGridPoint position = new NavGridPoint((int)moveObject.Position.x, (int)moveObject.Position.z, 0);
         position.weight = GetDistance(position.x, position.z, fX, fZ);
         priorityQueue.Add(position);
         scanned[position.x, position.z] = true;
@@ -113,7 +77,7 @@ public class TerrainNavMesh : MonoBehaviour {
 
             for(int i = 0; i < moveArray.GetLength(0); i++)
             {
-                NavPosition temp = new NavPosition(position.x - moveArray[i, 0], position.z - moveArray[i, 1], position.order + 1);
+                NavGridPoint temp = new NavGridPoint(position.x - moveArray[i, 0], position.z - moveArray[i, 1], position.order + 1);
                 if (temp.x < 0 || temp.x >= TerrainHeightMap.Instance.Width || temp.z < 0 || temp.z >= TerrainHeightMap.Instance.Length 
                     || scanned[temp.x, temp.z]) continue;
                 scanned[temp.x, temp.z] = true;
@@ -130,7 +94,7 @@ public class TerrainNavMesh : MonoBehaviour {
             while(position.oldPoint != null)
             {
                 Vector3 res = new Vector3(position.x, TerrainHeightMap.Instance.GetHeight(position.x, position.z), position.z);
-                position = (NavPosition)position.oldPoint;
+                position = position.oldPoint;
                 result.Add(res);
             }
         }

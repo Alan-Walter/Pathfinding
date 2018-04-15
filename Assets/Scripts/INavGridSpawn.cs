@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface INavMeshSpawn
+public interface INavGridSpawn
 {
     Vector3 Position { get; }
     void SpawnObject();

@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
+public class UnitNavGridAgent : MonoBehaviour, INavGridSpawn, INavGridMove
 {
-    float maxHeight = 1.0f;
+    float maxHeight = 100.0f;
     private bool isMoved = false;
     Vector3 nextPoint;
     Vector3 targetPoint;
@@ -36,6 +36,7 @@ public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
     // Use this for initialization
     void Start () {
         oldPos = Position;
+        gameObject.transform.position = new Vector3(oldPos.x, TerrainHeightMap.Instance.GetHeight((int)oldPos.x, (int)oldPos.z), oldPos.z);
         SpawnObject();
     }
 	
@@ -59,10 +60,7 @@ public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
                 }
                 isMoved = GetNextPoint();
                 if (!isMoved)
-                {
-                    GetMovePath();
-                    isMoved = GetNextPoint();
-                }
+                    SetMovePosition(targetPoint);
                 if (isMoved)
                     MoveObject();
             }
@@ -71,12 +69,12 @@ public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
 
     public void SpawnObject()
     {
-        TerrainNavMesh.Instance.Spawn(oldPos);
+        TerrainNavGrid.Instance.Spawn(oldPos);
     }
 
     private void MoveObject()
     {
-        TerrainNavMesh.Instance.MoveObject(oldPos, nextPoint);
+        TerrainNavGrid.Instance.MoveObject(oldPos, nextPoint);
         oldPos = nextPoint;
     }
 
@@ -86,6 +84,7 @@ public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
         targetPoint = position;
         GetMovePath();
         isMoved = GetNextPoint();
+        if (!isMoved) return;
         MoveObject();
     }
 
@@ -95,13 +94,13 @@ public class UnitNavMeshAgent : MonoBehaviour, INavMeshSpawn, INavMeshMove
             return false;
         nextPoint = path[path.Count - 1];
         path.RemoveAt(path.Count - 1);
-        if (TerrainNavMesh.Instance.IsCellUsed(nextPoint))
+        if (TerrainNavGrid.Instance.IsCellUsed(nextPoint))
             return false;
         return true;
     }
 
     private void GetMovePath()
     {
-        path = TerrainNavMesh.Instance.GetMovePath(this, targetPoint);
+        path = TerrainNavGrid.Instance.GetMovePath(this, targetPoint);
     }
 }

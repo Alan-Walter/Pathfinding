@@ -7,7 +7,7 @@ public class Unit : MonoBehaviour, ISelectObject {
     //private Color SelectColor = Color.cyan;
     //private Color DeselectColor = Color.white;
     //private Renderer render;
-    private UnitNavMeshAgent unitMove;
+    private UnitNavGridAgent unitMove;
 
     private TargetPoint targetPoint;
 
@@ -15,7 +15,7 @@ public class Unit : MonoBehaviour, ISelectObject {
     void Start () {
         UnitManager.Instance.AddUnit(this);
         //render = GetComponent<Renderer>();
-        unitMove = GetComponent<UnitNavMeshAgent>();
+        unitMove = GetComponent<UnitNavGridAgent>();
 	}
 	
 	// Update is called once per frame
