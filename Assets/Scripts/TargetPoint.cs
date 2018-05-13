@@ -3,22 +3,21 @@ using System.Collections;
 
 public class TargetPoint : MonoBehaviour {
     private int count = 0;
-    private Vector3 position;
-    public Vector3 Position
+    private Vector2Int gridPosition;
+    public Vector2Int Position
     {
         get
         {
-            return position;
+            return gridPosition;
         }
     }
 
     void Awake() {
-        position = new Vector3(Mathf.RoundToInt(gameObject.transform.position.x), Mathf.RoundToInt(gameObject.transform.position.y),
-            Mathf.RoundToInt(gameObject.transform.position.z));
+        gridPosition = new Vector2Int(Mathf.RoundToInt(gameObject.transform.position.x), Mathf.RoundToInt(gameObject.transform.position.z));
     }
     // Use this for initialization
     void Start () {
-	    
+        this.gameObject.transform.position = new Vector3(gridPosition.x, TerrainHeightMap.Instance.GetHeight(gridPosition), gridPosition.y);
     }
 	
 	// Update is called once per frame

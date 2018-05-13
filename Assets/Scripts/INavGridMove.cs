@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public interface INavGridMove {
-    Vector3 Position { get; }
     float MaxHeight { get; }
-    void SetMovePosition(Vector3 position);
+    PathFinder PathFind { get; set; }
+    Vector2Int GridPosition { get; }
+    void SetMovePosition(Vector2Int position);
+    void OnPathFound(List<Vector2Int> path);
 }

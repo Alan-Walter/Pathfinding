@@ -5,7 +5,16 @@ public class CameraMove : MonoBehaviour
 {
     private const int cameraMoveIndentSize = 5;  //  отступ от края экрана, в зоне которого начинается взаимодействие с перемещением
     private const float cameraMoveSize = 150.0f;  //  количество пунктов, на которое изменяется текущее положение/угол
+    private const float cameraRotatationSize = 60;
     private const float cameraMoveY = 2.0f;  //  коэффициент увеличения скорости перемещения высоты камеры колёсиком мыши
+
+    private float CameraMoveCoef
+    {
+        get
+        {
+            return sceneCamera.transform.position.y * cameraMoveSize / GameConstants.CameraMaxHeight;
+        }
+    }
 
     private Camera sceneCamera;  //  камера сцены
 
@@ -17,16 +26,12 @@ public class CameraMove : MonoBehaviour
     private float cameraSinMove;  //  перемещение камеры с учётом синуса угла камеры
     private SelectGameObject selectGameObject;  //  объект, отвечающий за выделение объектов(юнитов) на экране
 
-
-    TerrainHeightMap terrainHeightMap;
-
     // Use this for initialization
     void Start ()
     {
         sceneCamera = Camera.main;  //  указываем на главную камеру сцены
         basicCameraRotation = sceneCamera.transform.rotation;  //  запоминаем углы камеры
         CalcMoveAngles();  //  вычисляем перемещение по сторонам относительно угла поворота камеры
-        terrainHeightMap = TerrainHeightMap.Instance;
         selectGameObject = GetComponent<SelectGameObject>();  //  получаем объект SelectGameObject
     }
 
@@ -40,41 +45,39 @@ public class CameraMove : MonoBehaviour
             cameraPosition = sceneCamera.transform.position;
             if (mousePosition.x < cameraMoveIndentSize || Input.GetAxis("Horizontal") < 0)
             {
-                cameraPosition.x -= cameraCosMove * Time.deltaTime;
-                cameraPosition.z += cameraSinMove * Time.deltaTime;
+                cameraPosition.x -= cameraCosMove * Time.deltaTime * CameraMoveCoef;
+                cameraPosition.z += cameraSinMove * Time.deltaTime * CameraMoveCoef;
             }
             else if (mousePosition.x > Screen.width - cameraMoveIndentSize || Input.GetAxis("Horizontal") > 0)
             {
-                cameraPosition.x += cameraCosMove * Time.deltaTime;
-                cameraPosition.z -= cameraSinMove * Time.deltaTime;
+                cameraPosition.x += cameraCosMove * Time.deltaTime * CameraMoveCoef;
+                cameraPosition.z -= cameraSinMove * Time.deltaTime * CameraMoveCoef;
             }
             if (mousePosition.y < cameraMoveIndentSize || Input.GetAxis("Vertical") < 0)
             {
-                cameraPosition.x -= cameraSinMove * Time.deltaTime;
-                cameraPosition.z -= cameraCosMove * Time.deltaTime;
+                cameraPosition.x -= cameraSinMove * Time.deltaTime * CameraMoveCoef;
+                cameraPosition.z -= cameraCosMove * Time.deltaTime * CameraMoveCoef;
             }
             else if (mousePosition.y > Screen.height - cameraMoveIndentSize || Input.GetAxis("Vertical") > 0)
             {
-                cameraPosition.z += cameraCosMove * Time.deltaTime;
-                cameraPosition.x += cameraSinMove * Time.deltaTime;
+                cameraPosition.z += cameraCosMove * Time.deltaTime * CameraMoveCoef;
+                cameraPosition.x += cameraSinMove * Time.deltaTime * CameraMoveCoef;
             }
 
-            cameraPosition.y -= Input.mouseScrollDelta.y * cameraMoveSize * cameraMoveY * Time.deltaTime;
-            cameraPosition.x = Mathf.Clamp(cameraPosition.x, 0, terrainHeightMap.Width);
-            cameraPosition.z = Mathf.Clamp(cameraPosition.z, 0, terrainHeightMap.Length);
+            cameraPosition.y -= Input.mouseScrollDelta.y * CameraMoveCoef * cameraMoveY * Time.deltaTime;
+            cameraPosition.x = Mathf.Clamp(cameraPosition.x, 0, GameParams.Width);
+            cameraPosition.z = Mathf.Clamp(cameraPosition.z, 0, GameParams.Length);
             cameraPosition.y = Mathf.Clamp(cameraPosition.y, GameConstants.CameraMinHeight, GameConstants.CameraMaxHeight);
             sceneCamera.transform.position = cameraPosition;
         }
         else
         {
-            sceneCamera.transform.Rotate(0.0f, cameraMoveSize * Input.GetAxis("Mouse X") * Time.deltaTime, 0.0f, Space.World);
+            sceneCamera.transform.Rotate(0.0f, cameraRotatationSize * Input.GetAxis("Mouse X") * Time.deltaTime, 0.0f, Space.World);
             //  выполняем поворот камеры
             CalcMoveAngles();
         }
         if(Input.GetMouseButtonDown(2))
-        {
             cameraAngles = sceneCamera.transform.eulerAngles;
-        }
         if (Input.GetMouseButtonUp(2) && cameraAngles == sceneCamera.transform.eulerAngles)  
             //  возвращаем стандартные значения при нажатии средней клавиши мыши
         {
@@ -85,7 +88,7 @@ public class CameraMove : MonoBehaviour
 
     private void CalcMoveAngles()
     {
-        cameraCosMove = Mathf.Cos(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad) * cameraMoveSize;  //  вычисляем синус и косинусы
-        cameraSinMove = Mathf.Sin(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad) * cameraMoveSize;
+        cameraCosMove = Mathf.Cos(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad);  //  вычисляем синус и косинусы
+        cameraSinMove = Mathf.Sin(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad);
     }
 }

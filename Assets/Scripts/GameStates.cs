@@ -5,8 +5,18 @@ public static class GameStates {
     public static GamePlayState gamePlayState = GamePlayState.Play;
 }
 
-public enum GamePlayState
-{
+public enum GamePlayState {
     Play,
     Pause
+}
+
+public enum GameModes {
+    Sandbox,
+    Competitions
+}
+
+public enum MapTypes {
+    Generation,
+    Labyrinth,
+    DefaultMaps
 }

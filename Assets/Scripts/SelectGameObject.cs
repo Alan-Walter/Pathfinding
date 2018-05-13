@@ -72,10 +72,10 @@ public class SelectGameObject : MonoBehaviour {
             SelectUnitsInRectangle(firstPoint, Input.mousePosition);
             isSelectingObjects = false;
         }
-        if(Input.GetKey(KeyCode.S))
-        {
-            GameObject target = Instantiate(unitSpawn, Camera.main.transform.position, new Quaternion()) as GameObject;
-        }
+        //if(Input.GetKey(KeyCode.S))
+        //{
+        //    GameObject target = Instantiate(unitSpawn, Camera.main.transform.position, new Quaternion()) as GameObject;
+        //}
 	}
 
     private RaycastHit GetHitFromCursor()

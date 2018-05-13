@@ -2,107 +2,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Threading;
 
 public class TerrainNavGrid : MonoBehaviour {
 
-    private const int MinDistance = 3; 
     private bool[,] usedCell;
     public static TerrainNavGrid Instance { get; private set; }
-    private sbyte[,] moveArray = {
-        { -1, -1 },
-        { 0, -1 },
-        { 1, -1 },
-        { 1, 0 },
-        { 1, 1 },
-        { 0, 1 },
-        { -1, 1 },
-        { -1, 0 },
-    };
+
+    private List<PathFinder> pathFindThreads = new List<PathFinder>();
+    private Queue<PathFinder> unitPathQueue = new Queue<PathFinder>();
 
     // Use this for initialization
 
-    private void Awake()
-    {
+    private void Awake() {
         Instance = this;
-        usedCell = new bool[TerrainHeightMap.Instance.Width, TerrainHeightMap.Instance.Length];
+        usedCell = new bool[GameParams.Length, GameParams.Width];
     }
 
-    void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-
-    public void Spawn(Vector3 pos)
-    {
-        usedCell[(int)(pos.x), (int)(pos.z)] = true;
-    }
-
-    public bool IsCellUsed(Vector3 position)
-    {
-        return usedCell[(int)(position.x), (int)(position.z)];
-    }
-
-    public void MoveObject(Vector3 oldPos, Vector3 newPosition)
-    {
-        usedCell[(int)(oldPos.x), (int)(oldPos.z)] = false;
-        usedCell[(int)(newPosition.x), (int)(newPosition.z)] = true;
-    }
-
-    public List<Vector3> GetMovePath(INavGridMove moveObject, Vector3 finishPosition)
-    {
-        bool find = false;
-        int fX = (int)finishPosition.x, fZ = (int)finishPosition.z;
-        List<Vector3> result = new List<Vector3>();
-        if (usedCell[(int)finishPosition.x, (int)finishPosition.z]) return result;
-        PriorityQueue<NavGridPoint> priorityQueue = new PriorityQueue<NavGridPoint>();
-        bool[,] scanned = new bool[TerrainHeightMap.Instance.Width, TerrainHeightMap.Instance.Length];
-        NavGridPoint position = new NavGridPoint((int)moveObject.Position.x, (int)moveObject.Position.z, 0);
-        position.weight = GetDistance(position.x, position.z, fX, fZ);
-        priorityQueue.Add(position);
-        scanned[position.x, position.z] = true;
-
-        while(priorityQueue.Count != 0)
+    void FixedUpdate() {
+        for(int i = 0; i < pathFindThreads.Count; i++)
         {
-            position = priorityQueue.GetMin();
-            if (position.x == fX && position.z == fZ)
+            if(pathFindThreads[i].IsComplete || !pathFindThreads[i].FindThread.IsAlive)
             {
-                find = true;
-                break;
-            }
-
-            for(int i = 0; i < moveArray.GetLength(0); i++)
-            {
-                NavGridPoint temp = new NavGridPoint(position.x - moveArray[i, 0], position.z - moveArray[i, 1], position.order + 1);
-                if (temp.x < 0 || temp.x >= TerrainHeightMap.Instance.Width || temp.z < 0 || temp.z >= TerrainHeightMap.Instance.Length 
-                    || scanned[temp.x, temp.z]) continue;
-                scanned[temp.x, temp.z] = true;
-                float height = TerrainHeightMap.Instance.GetHeight(temp.x, temp.z);
-                if (usedCell[temp.x, temp.z] || height > moveObject.Position.y + moveObject.MaxHeight)
-                    continue;
-                temp.weight = temp.order + GetDistance(temp.x, temp.z, fX, fZ);
-                temp.oldPoint = position;
-                priorityQueue.Add(temp);
+                pathFindThreads.RemoveAt(i);
+                i--;
             }
         }
-        if(find)
+        while (pathFindThreads.Count < GameConstants.MaxThreads && unitPathQueue.Count != 0)
         {
-            while(position.oldPoint != null)
-            {
-                Vector3 res = new Vector3(position.x, TerrainHeightMap.Instance.GetHeight(position.x, position.z), position.z);
-                position = position.oldPoint;
-                result.Add(res);
-            }
+            PathFinder temp = unitPathQueue.Dequeue();
+            temp.FindThread = new Thread(temp.FindPath);
+            temp.FindThread.IsBackground = true;
+            pathFindThreads.Add(temp);
+            temp.FindThread.Start();
         }
-        return result;
     }
 
-    private float GetDistance(int x1, int z1, int x2, int z2)
+    public void Spawn(Vector2Int pos) {
+        usedCell[pos.y, pos.x] = true;
+    }
+
+    public void FindPath(INavGridMove unit, Vector2Int finish) {
+        if (!IsCellUsed(finish) || IsCellUsed(finish) && PathFinder.FindFreeCell(finish, out finish, unit.MaxHeight))
+        {
+            if(unit.PathFind != null && unit.PathFind.FindThread.IsAlive)
+                unit.PathFind.FindThread.Abort();
+            unit.PathFind = new PathFinder(unit.GridPosition, finish, unit.MaxHeight, unit.OnPathFound);
+            unitPathQueue.Enqueue(unit.PathFind);
+        }
+    }
+
+    public bool IsCellUsed(Vector2Int position)
     {
-        return Mathf.Sqrt(Mathf.Pow(x2 - x1, 2) + Mathf.Pow(z2 - z1, 2));
+        return usedCell[position.y, position.x];
+    }
+
+    public void MoveObject(Vector2Int oldPos, Vector2Int newPos)
+    {
+        usedCell[oldPos.y, oldPos.x] = false;
+        usedCell[newPos.y, newPos.x] = true;
     }
 }

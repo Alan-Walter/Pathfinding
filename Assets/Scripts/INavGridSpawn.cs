@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-public interface INavGridSpawn
-{
-    Vector3 Position { get; }
-    void SpawnObject();
+public interface INavGridSpawn {
+    void SpawnObject(Vector2Int position);
 }
