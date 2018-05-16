@@ -6,7 +6,9 @@ using System.Linq;
 public static class GameParams {
 
     public static GameModes GameMode = GameModes.Sandbox;
+    public static CameraStates CameraState = CameraStates.Normal;
     public static MapTypes MapType = MapTypes.Generation;
+    public static GamePlayState GamePlayState = GamePlayState.Menu;
     public static float MapScale = 1.0f;
     public static float Seed = 1.0f;
     public static int MapId = 0;

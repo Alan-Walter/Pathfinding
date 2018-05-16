@@ -288,11 +288,14 @@
     <Compile Include="Assets\Import\OutlineEffect\OutlineEffect.cs" />
     <Compile Include="Assets\Scripts\Build.cs" />
     <Compile Include="Assets\Scripts\CameraMove.cs" />
+    <Compile Include="Assets\Scripts\CompetitionMenuContols.cs" />
+    <Compile Include="Assets\Scripts\FinishTrigger.cs" />
     <Compile Include="Assets\Scripts\GameConstants.cs" />
+    <Compile Include="Assets\Scripts\GameEnums.cs" />
     <Compile Include="Assets\Scripts\GameParams.cs" />
-    <Compile Include="Assets\Scripts\GameStates.cs" />
     <Compile Include="Assets\Scripts\GlobalFunctions.cs" />
     <Compile Include="Assets\Scripts\GuiRectangle.cs" />
+    <Compile Include="Assets\Scripts\IFindPath.cs" />
     <Compile Include="Assets\Scripts\INavGridMove.cs" />
     <Compile Include="Assets\Scripts\INavGridSpawn.cs" />
     <Compile Include="Assets\Scripts\ISelectObject.cs" />
@@ -301,16 +304,22 @@
     <Compile Include="Assets\Scripts\MazeGenerator.cs" />
     <Compile Include="Assets\Scripts\NavGridPoint.cs" />
     <Compile Include="Assets\Scripts\PathFinder.cs" />
+    <Compile Include="Assets\Scripts\PathImage.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlaySettingsContols.cs" />
     <Compile Include="Assets\Scripts\PriorityQueue.cs" />
     <Compile Include="Assets\Scripts\SelectGameObject.cs" />
+    <Compile Include="Assets\Scripts\SpawnMenuControls.cs" />
     <Compile Include="Assets\Scripts\TargetPoint.cs" />
     <Compile Include="Assets\Scripts\TerrainHeightMap.cs" />
     <Compile Include="Assets\Scripts\TerrainNavGrid.cs" />
+    <Compile Include="Assets\Scripts\TipsControls.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
     <Compile Include="Assets\Scripts\UnitManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Import\Circle\ProjectorAdditiveTint.shader" />
     <None Include="Assets\Import\OutlineEffect\Resources\OutlineBufferShader.shader" />
     <None Include="Assets\Import\OutlineEffect\Resources\OutlineShader.shader" />
   </ItemGroup>

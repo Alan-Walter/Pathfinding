@@ -9,7 +9,6 @@ public class SelectGameObject : MonoBehaviour {
     private Vector3 firstPoint;
     private bool isSelectingObjects = false;
     public GameObject targetPoint;
-    public GameObject unitSpawn;
 
     private GuiRectangle border;
 
@@ -31,7 +30,11 @@ public class SelectGameObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (GameStates.gamePlayState != GamePlayState.Play) return;
+        if (GameParams.GamePlayState != GamePlayState.Play)
+        {
+            isSelectingObjects = false;
+            return;
+        }
         if(Input.GetMouseButtonDown(0))
         {
             RaycastHit hit = GetHitFromCursor();
@@ -46,8 +49,11 @@ public class SelectGameObject : MonoBehaviour {
                 {
                     ClearSelectObjects();
                     Unit unit= hit.transform.GetComponent<Unit>();
-                    selectionList.Add(unit);
-                    unit.OnSelectObject();
+                    if (unit.Player == PlayerController.ActivePlayer)
+                    {
+                        selectionList.Add(unit);
+                        unit.OnSelectObject();
+                    }
                 }
             }
         }
@@ -61,6 +67,7 @@ public class SelectGameObject : MonoBehaviour {
                 {
                     GameObject target = Instantiate(targetPoint, hit.point, new Quaternion()) as GameObject;
                     TargetPoint point = target.GetComponent<TargetPoint>();
+                    if (TerrainNavGrid.Instance.IsCellUsed(point.Position)) return;
                     selectionList.ForEach(x => x.OnSetTarget(point));
                 }
             }
@@ -72,13 +79,9 @@ public class SelectGameObject : MonoBehaviour {
             SelectUnitsInRectangle(firstPoint, Input.mousePosition);
             isSelectingObjects = false;
         }
-        //if(Input.GetKey(KeyCode.S))
-        //{
-        //    GameObject target = Instantiate(unitSpawn, Camera.main.transform.position, new Quaternion()) as GameObject;
-        //}
 	}
 
-    private RaycastHit GetHitFromCursor()
+    public static RaycastHit GetHitFromCursor()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -103,7 +106,7 @@ public class SelectGameObject : MonoBehaviour {
         {
             Vector3 screenPos = Camera.main.WorldToScreenPoint(unit.transform.position);
             screenPos.y = Screen.height - screenPos.y;
-            if (rect.Contains(screenPos))
+            if (rect.Contains(screenPos) && unit.Player == PlayerController.ActivePlayer)
             {
                 selectionList.Add(unit);
                 unit.OnSelectObject();
@@ -119,7 +122,13 @@ public class SelectGameObject : MonoBehaviour {
     }
 
     void OnGUI() {
-        if(isSelectingObjects)
+        if(isSelectingObjects && GameParams.GamePlayState == GamePlayState.Play)
             border.DrawBorderTexture(GetRectangle(firstPoint, Input.mousePosition), new Color(255, 184, 65), GameConstants.BorderThickness);
+        if (selectionList != null && selectionList.Count == 1)
+        {
+            Unit unit = selectionList[0] as Unit;
+            if (unit == null || unit.PathImage == null) return;
+            GUI.DrawTexture(new Rect(Screen.width - 200, 0, 200, 200), unit.PathImage.CreateImage());
+        }
     }
 }

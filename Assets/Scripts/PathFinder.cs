@@ -6,7 +6,8 @@ using UnityEngine;
 public class PathFinder {
     public Thread FindThread;
     public bool IsComplete { get; private set; }
-    private bool isPathFound = false;
+    public bool IsActual { get; set; }
+    public bool IsPathFound { get; private set; }
     private List<Vector2Int> path = new List<Vector2Int>();
     private float maxHeight = 0;
 
@@ -29,6 +30,7 @@ public class PathFinder {
         start = _start;
         finish = _finish;
         maxHeight = _maxHeight;
+        IsPathFound = false;
     }
 
     public PathFinder(Vector2Int _start, Vector2Int _finish, float _maxHeight, OnPathFound function) : this(_start, _finish, _maxHeight) {
@@ -38,6 +40,7 @@ public class PathFinder {
 
     public void FindPath()
     {
+        //if (TerrainNavGrid.Instance.IsCellUsed(finish) && !FindFreeCell(finish, out finish, maxHeight)) return;
         bool[,] scannedCells = new bool[GameParams.Width, GameParams.Length];
         PriorityQueue<NavGridPoint> queue = new PriorityQueue<NavGridPoint>();
         NavGridPoint point = new NavGridPoint(start, 0), movePoint;
@@ -46,19 +49,20 @@ public class PathFinder {
         scannedCells[start.x, start.y] = true;
         while(queue.Count != 0)
         {
-            if (FindThread != null && (FindThread.ThreadState & ThreadState.AbortRequested) != 0) return;
+            if (FindThread != null && (FindThread.ThreadState & ThreadState.AbortRequested) != 0 
+                || TerrainNavGrid.Instance.IsCellUsed(finish) || !IsActual) return;
             point = queue.GetMin();
             if (point.Position == finish)
             {
-                isPathFound = true;
+                IsPathFound = true;
                 break;
             }
             foreach(Vector2Int move in MoveArray)
             {
                 movePoint = new NavGridPoint(point.Position + move, point.order + 1);
-                float height = TerrainHeightMap.Instance.GetHeight(movePoint.Position);
                 if (!IsPointInField(movePoint.Position) || TerrainNavGrid.Instance.IsCellUsed(movePoint.Position) 
-                    || height > TerrainHeightMap.Instance.GetHeight(point.Position) + maxHeight) continue;
+                    || TerrainHeightMap.Instance.GetHeight(movePoint.Position) > 
+                    TerrainHeightMap.Instance.GetHeight(point.Position) + maxHeight) continue;
                 movePoint.oldPoint = point;
                 movePoint.distance = GetDistance(movePoint.Position, finish);
                 if (scannedCells[movePoint.Position.x, movePoint.Position.y] )
@@ -76,7 +80,7 @@ public class PathFinder {
                 queue.Add(movePoint);
             }
         }
-        if (isPathFound)
+        if (IsPathFound)
         {
             while (point.oldPoint != null)
             {
@@ -85,7 +89,7 @@ public class PathFinder {
             }
         }
         IsComplete = true;
-        if (onPathfound != null && isPathFound)
+        if (onPathfound != null && IsPathFound)
             onPathfound.BeginInvoke(path, null, null);
     }
 

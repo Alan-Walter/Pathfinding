@@ -4,7 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
+public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, IFindPath {
+
+    public PathImage PathImage { get; private set; }
+
+    public int StepCount { get; private set; }
+
+    public Player Player { get; private set; }
 
     private cakeslice.Outline outline;
 
@@ -47,11 +53,19 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
         UnitManager.Instance.AddUnit(this);
         SpawnObject(new Vector2Int(Mathf.RoundToInt(gameObject.transform.position.x), Mathf.RoundToInt(gameObject.transform.position.z)));
         outline = this.gameObject.GetComponentInChildren<cakeslice.Outline>();
+        this.Player = PlayerController.ActivePlayer;
+        foreach (var x in this.GetComponentInChildren<Renderer>().materials)
+            x.color = Player.Color;
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (!isMove) return;
+        if(GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints)
+        {
+            isMove = false;
+            return;
+        }
         Vector3 position = this.gameObject.transform.position;
         if (Mathf.RoundToInt(position.x) != Mathf.RoundToInt(nextPosition.x) || Mathf.RoundToInt(position.z) != Mathf.RoundToInt(nextPosition.z))
             MoveGameObjectToPoint();
@@ -66,7 +80,9 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
             if (!isMove)
                 SetMovePosition(gridFinishPosition);
             else
+            {
                 MoveGrid();
+            }
         }
     }
 
@@ -89,8 +105,11 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
     {
         if(targetPoint != null)
             targetPoint.DeleteLink();
+        if (!TerrainNavGrid.IsPositionCorrect(point.Position)) return;
         targetPoint = point;
         targetPoint.AddLink();
+        PathImage = new PathImage(GameParams.Width, GameParams.Length);
+        PathImage.AddFinish(targetPoint.Position);
         SetMovePosition(targetPoint.Position);
         StopMove();
     }
@@ -105,7 +124,11 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
 
     public void SetMovePosition(Vector2Int position)
     {
+        if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints) return;
         gridFinishPosition = position;
+        //if (TerrainNavGrid.Instance.IsCellUsed(gridFinishPosition)
+        //    && !PathFinder.FindFreeCell(gridFinishPosition, out gridFinishPosition, this.MaxHeight))
+        //    return;
         TerrainNavGrid.Instance.FindPath(this, position);
     }
 
@@ -119,8 +142,11 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
 
     private void MoveGrid()
     {
+        if (GameParams.GameMode == GameModes.Competitions)
+            StepCount++;
         TerrainNavGrid.Instance.MoveObject(gridPosition, gridNextPosition);
         gridPosition = gridNextPosition;
+        PathImage += gridPosition;
         nextPosition = new Vector3(gridNextPosition.x, TerrainHeightMap.Instance.GetHeight(gridNextPosition), gridNextPosition.y);
     }
 
@@ -146,5 +172,10 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove {
     private void StopMove()
     {
         isMove = false;
+    }
+
+    public void ResetCount()
+    {
+        StepCount = 0;
     }
 }

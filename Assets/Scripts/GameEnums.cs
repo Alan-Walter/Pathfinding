@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class GameStates {
-    public static GamePlayState gamePlayState = GamePlayState.Play;
-}
-
 public enum GamePlayState {
     Play,
-    Pause
+    Menu,
+    Spawn,
+    SelectParams,
+    SelectStart,
+    SelectFinish,
+    End
 }
 
 public enum GameModes {
@@ -19,4 +20,15 @@ public enum MapTypes {
     Generation,
     Labyrinth,
     DefaultMaps
+}
+
+public enum ButtonKeyStates {
+    Normal,
+    Checked
+}
+
+public enum CameraStates
+{
+    Normal,
+    Freeze
 }

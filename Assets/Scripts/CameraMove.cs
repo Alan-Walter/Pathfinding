@@ -33,12 +33,13 @@ public class CameraMove : MonoBehaviour
         basicCameraRotation = sceneCamera.transform.rotation;  //  запоминаем углы камеры
         CalcMoveAngles();  //  вычисляем перемещение по сторонам относительно угла поворота камеры
         selectGameObject = GetComponent<SelectGameObject>();  //  получаем объект SelectGameObject
+        GameParams.GamePlayState = GamePlayState.Play;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameStates.gamePlayState != GamePlayState.Play || selectGameObject.IsSelectingObjects) return;
+        if (GameParams.CameraState == CameraStates.Freeze || selectGameObject.IsSelectingObjects) return;
         mousePosition = Input.mousePosition;
         if (!Input.GetMouseButton(2))
         {

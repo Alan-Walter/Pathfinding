@@ -41,4 +41,14 @@ public class UnitManager : MonoBehaviour {
     {
         return unitList;
     }
+
+    void OnGUI() {
+        GUI.Label(new Rect(0, 40, 150, 20), string.Format("Unit count: {0}", unitList.Count));
+    }
+
+    public void ResetUnitStepCount()
+    {
+        for (int i = 0; i < unitList.Count; i++)
+            unitList[i].ResetCount();
+    }
 }

@@ -7,7 +7,7 @@ public class TerrainHeightMap : MonoBehaviour {
     private Terrain terrain;
     public static TerrainHeightMap Instance { get; private set; }
     public GameObject BuildObject;
-    private float[,] heights;
+    private volatile float[,] heights;
 
     public int Width
     {
