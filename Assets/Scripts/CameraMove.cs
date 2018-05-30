@@ -84,6 +84,8 @@ public class CameraMove : MonoBehaviour
         {
             sceneCamera.transform.rotation = basicCameraRotation;
             CalcMoveAngles();
+            sceneCamera.transform.position = new Vector3(sceneCamera.transform.position.x, GameConstants.CameraMaxHeight,
+                sceneCamera.transform.position.z);
         }
     }
 

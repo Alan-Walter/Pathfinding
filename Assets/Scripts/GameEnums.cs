@@ -27,8 +27,12 @@ public enum ButtonKeyStates {
     Checked
 }
 
-public enum CameraStates
-{
+public enum CameraStates { 
     Normal,
     Freeze
+}
+
+public enum FinishNotFoundReasons {
+    FinishUsed,
+    PathNotFound
 }

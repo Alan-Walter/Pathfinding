@@ -7,4 +7,5 @@ public interface IFindPath {
     float MaxHeight { get; }
     PathFinder PathFind { get; set; }
     void OnPathFound(List<Vector2Int> path);
+    void OnPathNotFound(FinishNotFoundReasons reason);
 }

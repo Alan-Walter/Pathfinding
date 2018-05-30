@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PathImage {
-    bool[,] field;
-    private int width, length;
     bool isFirst = false;
+    Texture2D texture;
 
-    Vector2Int start, finish, last;
+    Vector2Int last;
 
     public PathImage(int width, int length)
     {
-        this.width = width;
-        this.length = length;
-        field = new bool[length, width];
+        texture = new Texture2D(width, length);
     }
 
     public static PathImage operator +(PathImage image, Vector2Int pos)
@@ -26,29 +23,26 @@ public class PathImage {
     {
         if (!isFirst)
         {
-            start = pos;
+            texture.SetPixel(pos.x, pos.y, Color.green);
             isFirst = true;
         }
+        else
+        {
+            texture.SetPixel(pos.x, pos.y, Color.yellow);
+            texture.SetPixel(last.x, last.y, Color.blue);
+        }
         last = pos;
-        field[pos.y, pos.x] = true;
+        texture.Apply();
     }
 
-    public void AddFinish(Vector2Int pos)
-    {
-        finish = pos;
-    }
+    //public void AddFinish(Vector2Int pos)
+    //{
+    //    texture.SetPixel(pos.x, pos.y, Color.red);
+    //    texture.Apply();
+    //}
 
-    public Texture2D CreateImage()
+    public Texture2D GetImage()
     {
-        Texture2D result = new Texture2D(width, length);
-        for (int i = 0; i < length; i++)
-            for (int j = 0; j < width; j++)
-                if (field[i, j])
-                    result.SetPixel(j, i, Color.blue);
-        result.SetPixel(start.x, start.y, Color.green);
-        result.SetPixel(last.x, last.y, Color.yellow);
-        result.SetPixel(finish.x, finish.y, Color.red);
-        result.Apply();
-        return result;
+        return texture;
     }
 }

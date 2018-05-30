@@ -15,6 +15,8 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     private cakeslice.Outline outline;
 
     private bool isMove = false;
+    private bool isPathFound = false;
+    //private bool isSkip = false;
 
     private Vector2Int gridPosition;
 
@@ -29,6 +31,10 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     private float speed = 10.2f;
 
     private TargetPoint targetPoint;
+
+    private Timer timer;
+
+    private int attemptCount = GameConstants.MaxPathFindAttempt;
 
     public float MaxHeight
     {
@@ -56,32 +62,40 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
         this.Player = PlayerController.ActivePlayer;
         foreach (var x in this.GetComponentInChildren<Renderer>().materials)
             x.color = Player.Color;
+        timer = this.gameObject.AddComponent<Timer>();
+        timer.onElapsed = TimerElapsed;
     }
 	
 	// Update is called once per frame
 	void Update () {
         if (!isMove) return;
-        if(GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints)
-        {
-            isMove = false;
-            return;
-        }
         Vector3 position = this.gameObject.transform.position;
         if (Mathf.RoundToInt(position.x) != Mathf.RoundToInt(nextPosition.x) || Mathf.RoundToInt(position.z) != Mathf.RoundToInt(nextPosition.z))
             MoveGameObjectToPoint();
         else
+            isMove = false;
+    }
+
+    void FixedUpdate() {
+        if (!isMove && isPathFound)
         {
-            if (movePath.Count == 0)
+            if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints)
             {
-                isMove = false;
+                StopMove();
                 return;
             }
-            isMove = GetNextPoint();
-            if (!isMove)
-                SetMovePosition(gridFinishPosition);
-            else
+            if (this.gridPosition != gridFinishPosition)
             {
-                MoveGrid();
+                if (!IsGetNextPoint())
+                {
+                    StopMove();
+                    SetMovePosition(gridFinishPosition);
+                }
+                else
+                {
+                    isMove = GetNextPoint();
+                    if (isMove) MoveGrid();
+                }
             }
         }
     }
@@ -106,12 +120,12 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
         if(targetPoint != null)
             targetPoint.DeleteLink();
         if (!TerrainNavGrid.IsPositionCorrect(point.Position)) return;
+        StopMove();
         targetPoint = point;
         targetPoint.AddLink();
         PathImage = new PathImage(GameParams.Width, GameParams.Length);
-        PathImage.AddFinish(targetPoint.Position);
+        //PathImage.AddFinish(targetPoint.Position);
         SetMovePosition(targetPoint.Position);
-        StopMove();
     }
 
     public void SpawnObject(Vector2Int position)
@@ -125,19 +139,21 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     public void SetMovePosition(Vector2Int position)
     {
         if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints) return;
+        //attemptCount = GameConstants.MaxPathFindAttempt;
+        timer.StopTimer();
         gridFinishPosition = position;
-        //if (TerrainNavGrid.Instance.IsCellUsed(gridFinishPosition)
-        //    && !PathFinder.FindFreeCell(gridFinishPosition, out gridFinishPosition, this.MaxHeight))
-        //    return;
-        TerrainNavGrid.Instance.FindPath(this, position);
+        if (TerrainNavGrid.Instance.IsCellUsed(gridFinishPosition) && 
+            !PathFinder.FindFreeCell(gridFinishPosition, out gridFinishPosition, this.MaxHeight))
+                return;
+        TerrainNavGrid.Instance.FindPath(this, gridFinishPosition);
     }
 
     public void OnPathFound(List<Vector2Int> path)
     {
         movePath = path;
-        isMove = GetNextPoint();
-        if (isMove)
-            MoveGrid();
+        isPathFound = true;
+        attemptCount = GameConstants.MaxPathFindAttempt;
+        timer.StopTimer();
     }
 
     private void MoveGrid()
@@ -152,13 +168,20 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
 
     private bool GetNextPoint()
     {
-        if (movePath == null || movePath.Count == 0)
-            return false;
+        if (!IsGetNextPoint()) return false;
         gridNextPosition = movePath[movePath.Count - 1];
         movePath.RemoveAt(movePath.Count - 1);
-        if (TerrainNavGrid.Instance.IsCellUsed(gridNextPosition))
-            return false;
         return true;
+    }
+
+    private bool IsGetNextPoint()
+    {
+        return IsPathExists() && !TerrainNavGrid.Instance.IsCellUsed(movePath[movePath.Count - 1]);
+    }
+
+    private bool IsPathExists()
+    {
+        return movePath != null && movePath.Count != 0;
     }
 
     private void MoveGameObjectToPoint()
@@ -172,10 +195,27 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     private void StopMove()
     {
         isMove = false;
+        isPathFound = false;
     }
 
     public void ResetCount()
     {
         StepCount = 0;
+    }
+
+
+    public void OnPathNotFound(FinishNotFoundReasons reason)
+    {
+        if (attemptCount == 0 || Vector2Int.Distance(this.gridPosition, gridFinishPosition) <= GameConstants.StopMoveMinDistance) return;
+        if (reason == FinishNotFoundReasons.PathNotFound)
+            attemptCount--;
+        else attemptCount = 1;
+        timer.CallTime = GameConstants.PathFindAttemptTime;
+        timer.StartTimer();
+    }
+
+    private void TimerElapsed()
+    {
+        SetMovePosition(gridFinishPosition);
     }
 }

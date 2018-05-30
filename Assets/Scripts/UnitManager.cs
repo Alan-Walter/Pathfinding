@@ -43,7 +43,7 @@ public class UnitManager : MonoBehaviour {
     }
 
     void OnGUI() {
-        GUI.Label(new Rect(0, 40, 150, 20), string.Format("Unit count: {0}", unitList.Count));
+        GUI.Label(new Rect(0, Screen.height - 60, 150, 20), string.Format("Unit count: {0}", unitList.Count));
     }
 
     public void ResetUnitStepCount()

@@ -27,7 +27,7 @@ public static class GameConstants {
 
     public const int MaxThreads = 3;
 
-    public const int FreeCellMaxOrder = 5;
+    public const int FreeCellMaxOrder = 100;
 
     public const float MaxDistance = 10;
     public const float FlagRadius = 4;
@@ -36,4 +36,11 @@ public static class GameConstants {
 
     public const int MaxPlayers = 2;
     public const int MaxStepPoints = 10;
+
+    public const float StopMoveMinDistance = 15;
+
+    public const int MaxPathFindAttempt = 4;
+    public const float PathFindAttemptTime = 1;
+
+    public const double FindMaxTime = 1500;
 }

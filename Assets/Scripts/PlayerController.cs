@@ -25,28 +25,25 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void AddPlayer(Player player)
-    {
+    public void AddPlayer(Player player) {
         playerList.Add(player);
     }
 
-    public void RemovePlayer(Player player)
-    {
+    public void RemovePlayer(Player player) {
         playerList.Remove(player);
     }
 
-    public int GetPlayerCount()
-    {
+    public int GetPlayerCount() {
         return playerList.Count;
     }
 
-    public void NextPlayer()
-    {
+    public void NextPlayer() {
         index = (index + 1) % playerList.Count;
         ActivePlayer = playerList[index];
         TipsControls.Instance.SetPlayerInfo();
         SpawnMenuControls.IsPlayerSpawnBuild = false;
         SpawnMenuControls.IsPlayerSpawnUnit = false;
         UnitManager.Instance.ResetUnitStepCount();
+        SelectGameObject.Instance.ClearSelectObjects();
     }
 }

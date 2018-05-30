@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -12,8 +13,18 @@ public class PathFinder {
     private float maxHeight = 0;
 
     public delegate void OnPathFound(List<Vector2Int> result);
+    public delegate void OnPathNotFound(FinishNotFoundReasons reason);
     OnPathFound onPathfound;
+    OnPathNotFound onPathNotFound;
     private Vector2Int start, finish;
+
+    private DateTime startTime;
+
+    public double FindTime {
+        get {
+            return (DateTime.UtcNow - startTime).TotalMilliseconds;
+        }
+    }
 
     private static readonly Vector2Int[] MoveArray = {
         new Vector2Int( -1, -1 ),
@@ -31,10 +42,17 @@ public class PathFinder {
         finish = _finish;
         maxHeight = _maxHeight;
         IsPathFound = false;
+        this.IsActual = true;
+        startTime = DateTime.UtcNow;
     }
 
     public PathFinder(Vector2Int _start, Vector2Int _finish, float _maxHeight, OnPathFound function) : this(_start, _finish, _maxHeight) {
         onPathfound = function;
+    }
+
+    public PathFinder(IFindPath unit, Vector2Int _finish): this(unit.GridPosition, _finish, unit.MaxHeight, unit.OnPathFound)
+    {
+        onPathNotFound = unit.OnPathNotFound;
     }
 
 
@@ -50,7 +68,12 @@ public class PathFinder {
         while(queue.Count != 0)
         {
             if (FindThread != null && (FindThread.ThreadState & ThreadState.AbortRequested) != 0 
-                || TerrainNavGrid.Instance.IsCellUsed(finish) || !IsActual) return;
+                || !IsActual) return;
+            if(TerrainNavGrid.Instance.IsCellUsed(finish))
+            {
+                onPathNotFound.BeginInvoke(FinishNotFoundReasons.FinishUsed, null, null);
+                return;
+            }
             point = queue.GetMin();
             if (point.Position == finish)
             {
@@ -88,6 +111,8 @@ public class PathFinder {
                 point = point.oldPoint;
             }
         }
+        else
+            onPathNotFound.BeginInvoke(FinishNotFoundReasons.PathNotFound, null, null);
         IsComplete = true;
         if (onPathfound != null && IsPathFound)
             onPathfound.BeginInvoke(path, null, null);

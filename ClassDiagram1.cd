@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="cakeslice.LinkedSet&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAgBAAAAAABAAAAAABAAEAAAAAAAQAAAAAABQAAA=</HashCode>
+      <FileName>Assets\Import\OutlineEffect\LinkedSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="cakeslice.Outline" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAIAAAAAAAAAAAAAAAAAAACIAACAAgAASEA=</HashCode>
+      <FileName>Assets\Import\OutlineEffect\Outline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cakeslice.OutlineEffect" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADABAADQASACRmAABAEhAAIAEwBARBEIQBAEFCIECkA=</HashCode>
+      <FileName>Assets\Import\OutlineEffect\OutlineEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Build" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACCAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Build.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CameraMove" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Ag4ABAAAwSAABAAAEAAAAAAAQBAAAAEAAAAAAAABQAA=</HashCode>
+      <FileName>Assets\Scripts\CameraMove.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CompetitionMenuContols" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgQAABAAACAABQAAAgAQAAAAAAAwAAAAACAAAEgAACA=</HashCode>
+      <FileName>Assets\Scripts\CompetitionMenuContols.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinishTrigger" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\FinishTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameConstants" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAgAEAAAABIAABIAgAAAAAAAIAAACQAQAAACGBk=</HashCode>
+      <FileName>Assets\Scripts\GameConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameParams" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAKABAACAAAAAEAAAEBAQAAAAAAACgAAAIAACQA=</HashCode>
+      <FileName>Assets\Scripts\GameParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlobalFunctions" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GlobalFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GuiRectangle" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAgAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GuiRectangle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="KeyController" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\KeyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainMenuControls" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\MainMenuControls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MazeGenerator" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAAAAAAQARAAAQAAAAACAAEAACAAAAACACAA=</HashCode>
+      <FileName>Assets\Scripts\MazeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NavGridPoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAQggAAAAAAAAGAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\NavGridPoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PathFinder" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAQAABEAAAAABAiAAACAAAAAAAAAIAQBEAACACAAAA=</HashCode>
+      <FileName>Assets\Scripts\PathFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PathImage" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAQAAAAAAQAAAgAgAAAAAAAABAAgA=</HashCode>
+      <FileName>Assets\Scripts\PathImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerController" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACIAAACAABAAAAAgAAAAAAAAQQgAAAABAEA=</HashCode>
+      <FileName>Assets\Scripts\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlaySettingsContols" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAQAABAAAACEAAAAAABAEAABIAAAAIAgAAAACCgAI=</HashCode>
+      <FileName>Assets\Scripts\PlaySettingsContols.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PriorityQueue&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAQEABAQAIAABAQAAAAIAAAEAAAAABBQIAA=</HashCode>
+      <FileName>Assets\Scripts\PriorityQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SelectGameObject" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAICAAAQABAIQAAABBAAABAAAAQACCAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\SelectGameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpawnMenuControls" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAIMCCgAAAAAAgCAABA4ABAAQABBACAAAICAAAA=</HashCode>
+      <FileName>Assets\Scripts\SpawnMenuControls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TargetPoint" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAACAAAAAgBAAAAAAQAAAAAAAAAAAAAAAAAMA=</HashCode>
+      <FileName>Assets\Scripts\TargetPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TerrainHeightMap" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABBAQAAAAAMIAAEpAAACCgAAAQAAAAABAAEA=</HashCode>
+      <FileName>Assets\Scripts\TerrainHeightMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TerrainNavGrid" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIgAACAAAAAEAAAAAAAgAAIAAQACMAAAAQEA=</HashCode>
+      <FileName>Assets\Scripts\TerrainNavGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TipsControls" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAAAAAAAAAAAAAEABAAAAAAQABAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TipsControls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unit" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQRgAAACDCBAAYBAIQAIAIAAAIBQQgABAEAAQBAGIA=</HashCode>
+      <FileName>Assets\Scripts\Unit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UnitManager" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAAAACAAAAAAAABAAAQAAUAAAAAAQACAAgAAAEA=</HashCode>
+      <FileName>Assets\Scripts\UnitManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="IFindPath" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAgAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\IFindPath.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="INavGridMove" Collapsed="true">
+    <Position X="2.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\INavGridMove.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="INavGridSpawn" Collapsed="true">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\INavGridSpawn.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ISelectObject" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAQAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ISelectObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GamePlayState" Collapsed="true">
+    <Position X="5.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAggAAAAAAIAAAAAEAAAAAAAAIAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GameModes" Collapsed="true">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MapTypes" Collapsed="true">
+    <Position X="7.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\GameEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ButtonKeyStates" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CameraStates" Collapsed="true">
+    <Position X="2.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\GameEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SelectGameObject : MonoBehaviour {
-    
+
+    public static SelectGameObject Instance;
     private List<ISelectObject> selectionList;
     private UnitManager unitManager;
     private Vector3 firstPoint;
@@ -22,6 +23,7 @@ public class SelectGameObject : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Instance = this;
 	    unitManager = UnitManager.Instance;
         selectionList = new List<ISelectObject>();
         border = new GuiRectangle(1, 1);
@@ -89,7 +91,7 @@ public class SelectGameObject : MonoBehaviour {
         return hit;
     }
 
-    private void ClearSelectObjects()
+    public void ClearSelectObjects()
     {
         selectionList.ForEach(x => x.OnDeselectObject());
         selectionList.Clear();
@@ -114,8 +116,7 @@ public class SelectGameObject : MonoBehaviour {
         }
     }
 
-    private static Rect GetRectangle(Vector3 first, Vector3 second)
-    {
+    private static Rect GetRectangle(Vector3 first, Vector3 second) {
         float width = second.x - first.x;
         float height = (Screen.height - second.y) - (Screen.height - first.y);
         return new Rect(first.x, Screen.height - first.y, width, height);
@@ -128,7 +129,7 @@ public class SelectGameObject : MonoBehaviour {
         {
             Unit unit = selectionList[0] as Unit;
             if (unit == null || unit.PathImage == null) return;
-            GUI.DrawTexture(new Rect(Screen.width - 200, 0, 200, 200), unit.PathImage.CreateImage());
+            GUI.DrawTexture(new Rect(Screen.width - 200, Screen.height - 200, 200, 200), unit.PathImage.GetImage());
         }
     }
 }
