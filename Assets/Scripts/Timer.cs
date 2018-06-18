@@ -29,6 +29,12 @@ public class Timer : MonoBehaviour {
         timerState = TimerStates.Stopped;
     }
 
+    public void SetTimer(float time)
+    {
+        this.CallTime = time;
+        StartTimer();
+    }
+
     private enum TimerStates {
         Stopped,
         Active,

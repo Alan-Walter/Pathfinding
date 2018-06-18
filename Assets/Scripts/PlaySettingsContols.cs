@@ -14,6 +14,21 @@ public class PlaySettingsContols : MonoBehaviour {
     public Dropdown GameModeDropdown;
     public Dropdown MapTypeDropdown;
 
+    void Awake() {
+        GameParams.GetMapsNames();
+        GameParams.GameMode = GameModes.Sandbox;
+        GameParams.CameraState = CameraStates.Normal;
+        GameParams.MapType = MapTypes.Generation;
+        GameParams.GamePlayState = GamePlayState.Menu;
+        GameParams.MapScale = 1.0f;
+        GameParams.Seed = 1.0f;
+        GameParams.MapId = 0;
+
+        GameParams.Width = GameConstants.MinWidth;
+        GameParams.Height = GameConstants.MaxHeight;
+        GameParams.Length = GameConstants.MinLength;
+}
+
     public void StartPressed() {
         GameParams.Length = GameParams.Width = int.Parse(SizeInputField.text);
         GameParams.GameMode = (GameModes)GameModeDropdown.value;
@@ -35,10 +50,6 @@ public class PlaySettingsContols : MonoBehaviour {
         }
         else if(GameParams.MapType == MapTypes.DefaultMaps)
         {
-            if(!GameParams.IsDefaultMapsLoaded)
-            {
-                GameParams.GetMapsNames();
-            }
             SelectMap.AddOptions(GameParams.MapNames);
             GenerationConfig.SetActive(false);
             LoadMap.SetActive(true);

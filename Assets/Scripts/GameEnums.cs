@@ -33,6 +33,8 @@ public enum CameraStates {
 }
 
 public enum FinishNotFoundReasons {
+    None,
     FinishUsed,
-    PathNotFound
+    PathNotFound,
+    Blocked
 }

@@ -24,6 +24,7 @@ public class TerrainNavGrid : MonoBehaviour {
         {
             if(pathFindThreads[i].FindThread.IsAlive && pathFindThreads[i].FindTime > GameConstants.FindMaxTime)
                 pathFindThreads[i].FindThread.Abort();
+            else
             if (!pathFindThreads[i].FindThread.IsAlive || pathFindThreads[i].IsComplete)
             {
                 pathFindThreads.RemoveAt(i);

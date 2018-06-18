@@ -35,12 +35,6 @@ public class PathImage {
         texture.Apply();
     }
 
-    //public void AddFinish(Vector2Int pos)
-    //{
-    //    texture.SetPixel(pos.x, pos.y, Color.red);
-    //    texture.Apply();
-    //}
-
     public Texture2D GetImage()
     {
         return texture;

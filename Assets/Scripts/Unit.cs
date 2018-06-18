@@ -14,9 +14,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
 
     private cakeslice.Outline outline;
 
-    private bool isMove = false;
-    private bool isPathFound = false;
-    //private bool isSkip = false;
+    private bool isGameObjectMove = false;
 
     private Vector2Int gridPosition;
 
@@ -68,34 +66,30 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isMove) return;
+        if (!isGameObjectMove) return;
         Vector3 position = this.gameObject.transform.position;
         if (Mathf.RoundToInt(position.x) != Mathf.RoundToInt(nextPosition.x) || Mathf.RoundToInt(position.z) != Mathf.RoundToInt(nextPosition.z))
             MoveGameObjectToPoint();
         else
-            isMove = false;
+            isGameObjectMove = false;
     }
 
     void FixedUpdate() {
-        if (!isMove && isPathFound)
+        if (!isGameObjectMove && movePath != null && movePath.Count > 0)
         {
             if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints)
-            {
                 StopMove();
-                return;
-            }
+            else
             if (this.gridPosition != gridFinishPosition)
             {
-                if (!IsGetNextPoint())
+                if (IsGetNextPoint())
                 {
-                    StopMove();
-                    SetMovePosition(gridFinishPosition);
+                    isGameObjectMove = GetNextPoint();
+                    if (isGameObjectMove) MoveGrid();
+                    return;
                 }
-                else
-                {
-                    isMove = GetNextPoint();
-                    if (isMove) MoveGrid();
-                }
+                StopMove();
+                SetMovePosition(gridFinishPosition);
             }
         }
     }
@@ -124,7 +118,6 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
         targetPoint = point;
         targetPoint.AddLink();
         PathImage = new PathImage(GameParams.Width, GameParams.Length);
-        //PathImage.AddFinish(targetPoint.Position);
         SetMovePosition(targetPoint.Position);
     }
 
@@ -139,7 +132,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     public void SetMovePosition(Vector2Int position)
     {
         if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints) return;
-        //attemptCount = GameConstants.MaxPathFindAttempt;
+        StopMove();
         timer.StopTimer();
         gridFinishPosition = position;
         if (TerrainNavGrid.Instance.IsCellUsed(gridFinishPosition) && 
@@ -151,7 +144,6 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     public void OnPathFound(List<Vector2Int> path)
     {
         movePath = path;
-        isPathFound = true;
         attemptCount = GameConstants.MaxPathFindAttempt;
         timer.StopTimer();
     }
@@ -194,8 +186,8 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
 
     private void StopMove()
     {
-        isMove = false;
-        isPathFound = false;
+        isGameObjectMove = false;
+        movePath = null;
     }
 
     public void ResetCount()
@@ -203,15 +195,11 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
         StepCount = 0;
     }
 
-
     public void OnPathNotFound(FinishNotFoundReasons reason)
     {
         if (attemptCount == 0 || Vector2Int.Distance(this.gridPosition, gridFinishPosition) <= GameConstants.StopMoveMinDistance) return;
-        if (reason == FinishNotFoundReasons.PathNotFound)
-            attemptCount--;
-        else attemptCount = 1;
-        timer.CallTime = GameConstants.PathFindAttemptTime;
-        timer.StartTimer();
+        attemptCount--;
+        timer.SetTimer(reason == FinishNotFoundReasons.Blocked ? GameConstants.PathFindBlockedTime : GameConstants.PathFindAttemptTime);
     }
 
     private void TimerElapsed()

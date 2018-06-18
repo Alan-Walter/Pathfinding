@@ -43,7 +43,7 @@ public class PathFinder {
         maxHeight = _maxHeight;
         IsPathFound = false;
         this.IsActual = true;
-        startTime = DateTime.UtcNow;
+        //startTime = DateTime.UtcNow;
     }
 
     public PathFinder(Vector2Int _start, Vector2Int _finish, float _maxHeight, OnPathFound function) : this(_start, _finish, _maxHeight) {
@@ -58,21 +58,21 @@ public class PathFinder {
 
     public void FindPath()
     {
-        //if (TerrainNavGrid.Instance.IsCellUsed(finish) && !FindFreeCell(finish, out finish, maxHeight)) return;
+        startTime = DateTime.UtcNow;
+        FinishNotFoundReasons notFoundReason = FinishNotFoundReasons.None;
         bool[,] scannedCells = new bool[GameParams.Width, GameParams.Length];
         PriorityQueue<NavGridPoint> queue = new PriorityQueue<NavGridPoint>();
         NavGridPoint point = new NavGridPoint(start, 0), movePoint;
         point.distance = GetDistance(start, finish);
         queue.Add(point);
         scannedCells[start.x, start.y] = true;
-        while(queue.Count != 0)
+        int moveCount = 0;
+        while(queue.Count != 0 && IsActual && (FindThread == null || (FindThread.ThreadState & ThreadState.AbortRequested) == 0))
         {
-            if (FindThread != null && (FindThread.ThreadState & ThreadState.AbortRequested) != 0 
-                || !IsActual) return;
             if(TerrainNavGrid.Instance.IsCellUsed(finish))
             {
-                onPathNotFound.BeginInvoke(FinishNotFoundReasons.FinishUsed, null, null);
-                return;
+                notFoundReason = FinishNotFoundReasons.FinishUsed;
+                break;
             }
             point = queue.GetMin();
             if (point.Position == finish)
@@ -101,8 +101,10 @@ public class PathFinder {
                 }
                 scannedCells[movePoint.Position.x, movePoint.Position.y] = true;
                 queue.Add(movePoint);
+                moveCount++;
             }
         }
+        IsComplete = true;
         if (IsPathFound)
         {
             while (point.oldPoint != null)
@@ -110,12 +112,14 @@ public class PathFinder {
                 path.Add(point.Position);
                 point = point.oldPoint;
             }
+            onPathfound.BeginInvoke(path, null, null);
         }
         else
-            onPathNotFound.BeginInvoke(FinishNotFoundReasons.PathNotFound, null, null);
-        IsComplete = true;
-        if (onPathfound != null && IsPathFound)
-            onPathfound.BeginInvoke(path, null, null);
+        {
+            if (notFoundReason == FinishNotFoundReasons.None)
+                notFoundReason = moveCount != 0 ? FinishNotFoundReasons.PathNotFound : FinishNotFoundReasons.Blocked;
+            onPathNotFound.BeginInvoke(notFoundReason, null, null);
+        }
     }
 
     public static bool FindFreeCell(Vector2Int position, out Vector2Int outpos, float _maxHeight = 0)

@@ -5,19 +5,17 @@ using System.Linq;
 
 public static class GameParams {
 
-    public static GameModes GameMode = GameModes.Sandbox;
-    public static CameraStates CameraState = CameraStates.Normal;
-    public static MapTypes MapType = MapTypes.Generation;
-    public static GamePlayState GamePlayState = GamePlayState.Menu;
-    public static float MapScale = 1.0f;
-    public static float Seed = 1.0f;
-    public static int MapId = 0;
+    public static GameModes GameMode;
+    public static CameraStates CameraState;
+    public static MapTypes MapType;
+    public static GamePlayState GamePlayState;
+    public static float MapScale;
+    public static float Seed;
+    public static int MapId;
 
-    public static int Width = GameConstants.MinWidth;
-    public static int Height = GameConstants.MaxHeight;
-    public static int Length = GameConstants.MinLength;
-
-    public static bool IsDefaultMapsLoaded { get; private set; }
+    public static int Width;
+    public static int Height;
+    public static int Length;
 
     public static List<string> MapNames;
 
@@ -26,6 +24,5 @@ public static class GameParams {
         if (Directory.Exists(GameConstants.MapPath))
             MapNames = Directory.GetFiles(GameConstants.MapPath).Where(a => a.Contains(GameConstants.MapFileEtension)).ToList();
         else Directory.CreateDirectory(GameConstants.MapPath);
-        IsDefaultMapsLoaded = true;
     }
 }
