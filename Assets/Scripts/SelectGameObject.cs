@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SelectGameObject : MonoBehaviour {
 
@@ -70,7 +71,7 @@ public class SelectGameObject : MonoBehaviour {
                     GameObject target = Instantiate(targetPoint, hit.point, new Quaternion()) as GameObject;
                     TargetPoint point = target.GetComponent<TargetPoint>();
                     if (TerrainNavGrid.Instance.IsCellUsed(point.Position)) return;
-                    selectionList.ForEach(x => x.OnSetTarget(point));
+                    selectionList.OrderBy(i => Vector2Int.Distance(i.GridPosition, point.Position)).ToList().ForEach(x => x.OnSetTarget(point));
                 }
             }
         }

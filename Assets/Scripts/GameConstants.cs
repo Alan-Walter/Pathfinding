@@ -39,9 +39,9 @@ public static class GameConstants {
 
     public const float StopMoveMinDistance = 15;
 
-    public const int MaxPathFindAttempt = 6;
+    public const int MaxPathFindAttempt = 4;
     public const float PathFindAttemptTime = 1;
-    public const float PathFindBlockedTime = 3;
+    public const float PathFindBlockedTime = 2;
 
-    public const double FindMaxTime = 1500;
+    public const double FindMaxTime = 2000;
 }

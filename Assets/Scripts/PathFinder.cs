@@ -158,4 +158,14 @@ public class PathFinder {
     {
         return pos.x >= 0 && pos.x < GameParams.Width && pos.y >= 0 && pos.y < GameParams.Length;
     }
+
+    public static bool IsPositionBlocked(Vector2Int position)
+    {
+        foreach(var x in MoveArray)
+        {
+            Vector2Int temp = x + position;
+            if (IsPointInField(temp) && !TerrainNavGrid.Instance.IsCellUsed(temp)) return false;
+        }
+        return true;
+    }
 }

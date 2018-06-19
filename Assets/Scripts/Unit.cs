@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     private cakeslice.Outline outline;
 
     private bool isGameObjectMove = false;
+    private bool isPositionBlocked = false;
 
     private Vector2Int gridPosition;
 
@@ -75,6 +76,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     }
 
     void FixedUpdate() {
+        if (isPositionBlocked) return;
         if (!isGameObjectMove && movePath != null && movePath.Count > 0)
         {
             if (GameParams.GameMode == GameModes.Competitions && StepCount == GameConstants.MaxStepPoints)
@@ -86,6 +88,12 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
                 {
                     isGameObjectMove = GetNextPoint();
                     if (isGameObjectMove) MoveGrid();
+                    return;
+                }
+                else if (!isPositionBlocked && PathFinder.IsPositionBlocked(movePath[movePath.Count - 1]))
+                {
+                    isPositionBlocked = true;
+                    timer.SetTimer(1);
                     return;
                 }
                 StopMove();
@@ -188,6 +196,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     {
         isGameObjectMove = false;
         movePath = null;
+        isPositionBlocked = false;
     }
 
     public void ResetCount()
@@ -204,6 +213,9 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
 
     private void TimerElapsed()
     {
+        if (isPositionBlocked)
+            isPositionBlocked = false;
+        else
         SetMovePosition(gridFinishPosition);
     }
 }
