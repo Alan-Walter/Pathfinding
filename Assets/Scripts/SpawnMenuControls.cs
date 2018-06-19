@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Класс управления клавишами спавна юнитов и кубов
+/// </summary>
 public class SpawnMenuControls : MonoBehaviour {
 
     public static bool IsPlayerSpawnUnit { get; set; }
@@ -125,15 +128,13 @@ public class SpawnMenuControls : MonoBehaviour {
         SetBuildButtonState(ButtonKeyStates.Normal);
     }
 
-    private void ButtonsStateChanges()
-    {
+    private void ButtonsStateChanges() {
         if (IsSpawnMenuButtonChecked)
             GameParams.GamePlayState = GamePlayState.Spawn;
         else GameParams.GamePlayState = GamePlayState.Play;
     }
 
-    public void OnNextButtonClick()
-    {
+    public void OnNextButtonClick() {
         if (GameParams.GamePlayState == GamePlayState.End) return;
         PlayerController.Instance.NextPlayer();
     }

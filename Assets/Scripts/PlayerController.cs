@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Класс, отвечающий за контроль игроков
+/// </summary>
 public class PlayerController : MonoBehaviour {
     public static PlayerController Instance { get; private set; }
     private List<Player> playerList = new List<Player>();
@@ -24,19 +27,19 @@ public class PlayerController : MonoBehaviour {
             ActivePlayer = playerList.FirstOrDefault();
         }
     }
-
+    // добавление игрока
     public void AddPlayer(Player player) {
         playerList.Add(player);
     }
-
+    //  Удаление игрока
     public void RemovePlayer(Player player) {
         playerList.Remove(player);
     }
-
+    //  Получение числа игроков
     public int GetPlayerCount() {
         return playerList.Count;
     }
-
+    //  Переключение активного игрока
     public void NextPlayer() {
         index = (index + 1) % playerList.Count;
         ActivePlayer = playerList[index];

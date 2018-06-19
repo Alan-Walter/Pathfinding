@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Класс, отвечающий за генерацию лабиринтов
+/// </summary>
 public class MazeGenerator {
     private int width, height;
     private long unvisitedCount;
@@ -14,15 +17,13 @@ public class MazeGenerator {
         new Vector2Int(2, 0)
     };
 
-    public MazeGenerator(int _width, int _height)
-    {
+    public MazeGenerator(int _width, int _height) {
         width = _width;
         height = _height;
         unvisitedCount = width * height;
     }
 
-    public bool [,] GenerateMaze()
-    {
+    public bool [,] GenerateMaze() {
         Stack<Vector2Int> positions = new Stack<Vector2Int>();
         
         CreateMaze();
@@ -51,8 +52,7 @@ public class MazeGenerator {
         return result;
     }
 
-    private void CreateMaze()
-    {
+    private void CreateMaze() {
         result = new bool[height, width];
         visited = new bool[height, width];
         for (int j = 0; j < height; j++)
@@ -64,16 +64,14 @@ public class MazeGenerator {
                 }
     }
 
-    private void RemoveWall(Vector2Int first, Vector2Int second)
-    {
+    private void RemoveWall(Vector2Int first, Vector2Int second) {
         Vector2Int diff = second - first;
         diff.x = diff.x != 0 ? diff.x / Mathf.Abs(diff.x) : 0;
         diff.y = diff.y != 0 ? diff.y / Mathf.Abs(diff.y) : 0;
         result[first.y + diff.y, first.x + diff.x] = false;
     }
 
-    private List<Vector2Int> GetNeighbors(Vector2Int pos)
-    {
+    private List<Vector2Int> GetNeighbors(Vector2Int pos) {
         List<Vector2Int> result = new List<Vector2Int>();
         foreach(Vector2Int x in MoveArray)
         {
@@ -84,16 +82,14 @@ public class MazeGenerator {
         return result;
     }
 
-    private Vector2Int GetUnvisitedPosition()
-    {
+    private Vector2Int GetUnvisitedPosition() {
         for (int j = height - 2; j > 0; j--)
             for (int i = width - 2; i > 0; i--)
                 if (!visited[j, i]) return new Vector2Int(i, j);
         return new Vector2Int();
     }
 
-    private void SetVisitedPosition(Vector2Int position)
-    {
+    private void SetVisitedPosition(Vector2Int position) {
         visited[position.y, position.x] = true;
         unvisitedCount--;
     }

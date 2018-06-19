@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+/// <summary>
+/// Класс очереди с приоритетом
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class PriorityQueue<T>: ICollection<T> where T: IComparable { 
     private List<T> priority = new List<T>();
 

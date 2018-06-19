@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class NavGridPoint : IComparable, IEquatable<NavGridPoint>
-{
+/// <summary>
+/// Класс, отвечающий за точку на навигационной сетке в алгоритме А*
+/// </summary>
+public class NavGridPoint : IComparable, IEquatable<NavGridPoint> {
     public Vector2Int Position;
     public int order;
     public float distance;
@@ -18,36 +20,35 @@ public class NavGridPoint : IComparable, IEquatable<NavGridPoint>
     }
     public NavGridPoint oldPoint;
 
-    public int CompareTo(object obj)
-    {
+    public int CompareTo(object obj) {
         if (obj == null || this.GetType() != obj.GetType()) return -1;
         NavGridPoint b = (NavGridPoint)obj;
         if (this.Weight < b.Weight) return 1;
         else if (this.Weight == b.Weight) return 0;
         return -1;
     }
-
-    public NavGridPoint(Vector2Int pos, int order)
-    {
+    /// <summary>
+    /// Конструктор
+    /// </summary>
+    /// <param name="pos">Позиция на навигационной сетке</param>
+    /// <param name="order">Порядковый номер от начала движения</param>
+    public NavGridPoint(Vector2Int pos, int order) {
         this.Position = pos;
         this.order = order;
         distance = 0;
         oldPoint = null;
     }
 
-    public override bool Equals(object obj)
-    {
+    public override bool Equals(object obj) {
         NavGridPoint temp = (NavGridPoint)obj;
         return this.Equals(temp);
     }
 
-    public override int GetHashCode()
-    {
+    public override int GetHashCode() {
         return base.GetHashCode();
     }
 
-    public bool Equals(NavGridPoint other)
-    {
+    public bool Equals(NavGridPoint other) {
         if (this.Position == other.Position) return true;
         return false;
     }

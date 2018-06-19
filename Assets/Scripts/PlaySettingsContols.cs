@@ -5,7 +5,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Класс, отвечающий за настройки игры, сцены
+/// </summary>
 public class PlaySettingsContols : MonoBehaviour {
+    #region Объеты интерфейса Юнити
     public GameObject GenerationConfig;
     public GameObject LoadMap;
     public Dropdown SelectMap;
@@ -13,8 +18,10 @@ public class PlaySettingsContols : MonoBehaviour {
     public InputField SizeInputField;
     public Dropdown GameModeDropdown;
     public Dropdown MapTypeDropdown;
+    #endregion
 
     void Awake() {
+        //  установка дефолтных значений
         GameParams.GetMapsNames();
         GameParams.GameMode = GameModes.Sandbox;
         GameParams.CameraState = CameraStates.Normal;
@@ -27,19 +34,19 @@ public class PlaySettingsContols : MonoBehaviour {
         GameParams.Width = GameConstants.MinWidth;
         GameParams.Height = GameConstants.MaxHeight;
         GameParams.Length = GameConstants.MinLength;
-}
-
+    }
+    //  Нажатие клавиши старт
     public void StartPressed() {
         GameParams.Length = GameParams.Width = int.Parse(SizeInputField.text);
         GameParams.GameMode = (GameModes)GameModeDropdown.value;
         GameParams.MapType = (MapTypes)MapTypeDropdown.value;
         SceneManager.LoadScene("main");
     }
-
+    //  Изменение режима игры
     public void OnGameModeChanged(int value) {
         GameParams.GameMode = (GameModes)value;
     }
-
+    //  Изменение типа карты
     public void OnMapTypeChanged(int value) {
         GameParams.MapType = (MapTypes)value;
         if(GameParams.MapType == MapTypes.Generation)
@@ -64,19 +71,19 @@ public class PlaySettingsContols : MonoBehaviour {
         OnSizeInputFieldChange(SizeInputField.text);
         OnSizeInputFieldEndEdit("");
     }
-
+    //  Изменение масштаба
     public void OnScaleChanged(float value) {
         GameParams.MapScale = value;
     }
-
+    //  Изменение смещения
     public void OnSeedChanged(float value) {
         GameParams.Seed = value;
     }
-
+    //  Выбор карты
     public void OnSelectMap(int value) {
         GameParams.MapId = value;
     }
-
+    //  Изменение размера карты
     public void OnSizeInputFieldChange(string text) {
         if (!int.TryParse(text, out GameParams.Width) || GameParams.Width < GameConstants.MinWidth)
             GameParams.Width = GameConstants.MinWidth;

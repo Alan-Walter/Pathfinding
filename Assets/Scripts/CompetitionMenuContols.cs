@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Класс, отвечающий за режим соревнования
+/// </summary>
 public class CompetitionMenuContols : MonoBehaviour {
-
+    #region Поля
     public Button StartSpawnButton;
     public Button FinishSpawnButton;
 
@@ -13,13 +16,16 @@ public class CompetitionMenuContols : MonoBehaviour {
 
     public GameObject StartPrefab;
     public GameObject FinishPrefab;
-
     private GameObject startObject;
     private GameObject finishObject;
 
     public static Vector2Int StartGridPosition;
     public static Vector2Int FinishGridPosition;
+    #endregion
 
+    /// <summary>
+    /// Активация режима соревнования
+    /// </summary>
     void Start() {
         if (GameParams.GameMode == GameModes.Competitions)
         {
@@ -30,15 +36,19 @@ public class CompetitionMenuContols : MonoBehaviour {
     }
 
     // Update is called once per frame
+    /// <summary>
+    /// Отслеживание состояний соревнования.
+    /// </summary>
     void Update () {
 		if((GameParams.GamePlayState == GamePlayState.SelectStart || GameParams.GamePlayState == GamePlayState.SelectFinish) 
             && Input.GetMouseButtonDown(1))
         {
             RaycastHit hit = SelectGameObject.GetHitFromCursor();
             if (hit.transform == null || hit.transform.tag != "Terrain") return;
-            Vector2Int spawnPos = new Vector2Int(Mathf.RoundToInt(hit.point.x), Mathf.RoundToInt(hit.point.z));
+            Vector2Int spawnPos = new Vector2Int(Mathf.RoundToInt(hit.point.x), Mathf.RoundToInt(hit.point.z)); 
+            //  получение координат по щелчку мыши
             if (TerrainNavGrid.Instance.IsCellUsed(spawnPos)) return;
-            if (GameParams.GamePlayState == GamePlayState.SelectStart)
+            if (GameParams.GamePlayState == GamePlayState.SelectStart)  //  если состояние - выбор старта
             {
                 if (startObject != null)
                     Destroy(startObject.gameObject);
@@ -47,8 +57,9 @@ public class CompetitionMenuContols : MonoBehaviour {
                 finishObject = null;
                 startObject = Instantiate(StartPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
                 StartGridPosition = spawnPos;
+                //  спавн объекта зоны старта
             }
-            else
+            else  //  если состояние - выбор финиша
             {
                 float distance = Vector2Int.Distance(StartGridPosition, spawnPos);
                 if (distance <= GameConstants.MaxDistance)
@@ -57,7 +68,6 @@ public class CompetitionMenuContols : MonoBehaviour {
                     return;
                 }
                 PathFinder finder = new PathFinder(StartGridPosition, spawnPos, GameConstants.PathFindMinHeight);
-                finder.IsActual = true;
                 finder.FindPath();
                 if(!finder.IsPathFound)
                 {
@@ -68,19 +78,25 @@ public class CompetitionMenuContols : MonoBehaviour {
                     Destroy(finishObject.gameObject);
                 finishObject = Instantiate(FinishPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
                 FinishGridPosition = spawnPos;
+                //  спавн объекта зоны финиша
             }
             GameParams.GamePlayState = GamePlayState.SelectParams;
             TipsControls.Instance.SetTipsText("");
         }
 	}
 
+    /// <summary>
+    /// Метод нажатия кнопки спавна
+    /// </summary>
     public void OnStartSpawnButtonClick() {
         if (GameParams.GamePlayState != GamePlayState.SelectParams) return;
         GameParams.GamePlayState = GamePlayState.SelectStart;
         TipsControls.Instance.SetTipsText("Выбор зоны старта");
-
     }
 
+    /// <summary>
+    /// Метод нажатия кнопки финиша
+    /// </summary>
     public void OnFinishSpawnButtonClick() {
         if (GameParams.GamePlayState != GamePlayState.SelectParams) return;
         if (startObject == null)
@@ -92,6 +108,9 @@ public class CompetitionMenuContols : MonoBehaviour {
         TipsControls.Instance.SetTipsText("Выбор зоны финиша");
     }
 
+    /// <summary>
+    /// Метод нажатия кнопки play
+    /// </summary>
     public void OnPlayButtonClick() {
         if (GameParams.GamePlayState != GamePlayState.SelectParams) return;
         if(startObject == null || finishObject == null)
@@ -99,7 +118,6 @@ public class CompetitionMenuContols : MonoBehaviour {
             TipsControls.Instance.SetTipsText("Сначала установите флаги старта и финиша!");
             return;
         }
-        //TipsControls.Instance.ShowTips(false);
         CompetitionMenu.SetActive(false);
         SpawnMenu.SetActive(true);
         GameParams.GamePlayState = GamePlayState.Play;

@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Класс управления юнитами
+/// </summary>
 public class UnitManager : MonoBehaviour {
 
     private List<Unit> unitList;
@@ -10,35 +13,24 @@ public class UnitManager : MonoBehaviour {
 
     public int Count;
 
-    void Awake()
-    {
+    void Awake() {
         Instance = this;
         unitList = new List<Unit>();
     }
 
-    // Use this for initialization
-    void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    public void AddUnit(Unit unit)
-    {
+    //  добавление юнита
+    public void AddUnit(Unit unit) {
         unitList.Add(unit);
         Count = unitList.Count;
     }
 
-    public void DeleteUnit(Unit unit)
-    {
+    //  удаление юнита
+    public void DeleteUnit(Unit unit) {
         unitList.Remove(unit);
     }
 
-    public List<Unit> GetUnitList()
-    {
+    //  получение списка юнитов
+    public List<Unit> GetUnitList() {
         return unitList;
     }
 
@@ -46,8 +38,8 @@ public class UnitManager : MonoBehaviour {
         GUI.Label(new Rect(0, Screen.height - 60, 150, 20), string.Format("Unit count: {0}", unitList.Count));
     }
 
-    public void ResetUnitStepCount()
-    {
+    //  обнуление количества шагов у юнитов
+    public void ResetUnitStepCount() {
         for (int i = 0; i < unitList.Count; i++)
             unitList[i].ResetCount();
     }

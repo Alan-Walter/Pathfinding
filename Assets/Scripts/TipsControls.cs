@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// Класс подсказок на экране
+/// </summary>
 public class TipsControls : MonoBehaviour {
     public static TipsControls Instance { get; private set; }
 
@@ -14,18 +16,15 @@ public class TipsControls : MonoBehaviour {
         ShowTips(GameParams.GameMode == GameModes.Competitions);
     }
 
-    public void ShowTips(bool state)
-    {
+    public void ShowTips(bool state) {
         TipsMenu.SetActive(state);
     }
 
-    public void SetTipsText(string text)
-    {
+    public void SetTipsText(string text) {
         TipsText.text = text;
     }
 
-    public void SetPlayerInfo()
-    {
+    public void SetPlayerInfo() {
         TipsText.text = string.Format("Ход игрока: {0}", PlayerController.ActivePlayer);
     }
 }

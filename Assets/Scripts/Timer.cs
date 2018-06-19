@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Класс таймера на игровом объекте
+/// </summary>
 public class Timer : MonoBehaviour {
 
     private TimerStates timerState = TimerStates.Stopped;
@@ -29,8 +31,7 @@ public class Timer : MonoBehaviour {
         timerState = TimerStates.Stopped;
     }
 
-    public void SetTimer(float time)
-    {
+    public void SetTimer(float time) {
         this.CallTime = time;
         StartTimer();
     }

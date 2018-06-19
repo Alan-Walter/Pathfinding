@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Класс объекта флага
+/// </summary>
 public class TargetPoint : MonoBehaviour {
     private int count = 0;
     private Vector2Int gridPosition;
@@ -19,19 +22,12 @@ public class TargetPoint : MonoBehaviour {
     void Start () {
         this.gameObject.transform.position = new Vector3(gridPosition.x, TerrainHeightMap.Instance.GetHeight(gridPosition), gridPosition.y);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-    public void AddLink()
-    {
+    public void AddLink() {
         count++;
     }
 
-    public void DeleteLink()
-    {
+    public void DeleteLink() {
         count--;
         if (count == 0)
             Destroy(gameObject);

@@ -3,6 +3,9 @@ using System.Collections;
 using System;
 using System.IO;
 
+/// <summary>
+/// Класс карты высот местности-
+/// </summary>
 public class TerrainHeightMap : MonoBehaviour {
     private Terrain terrain;
     public static TerrainHeightMap Instance { get; private set; }
@@ -49,18 +52,15 @@ public class TerrainHeightMap : MonoBehaviour {
         }
     }
 
-    public float GetHeight(int x, int y)
-    {
+    public float GetHeight(int x, int y) {
         return heights[y, x];
     }
 
-    public float GetHeight(Vector2Int pos)
-    {
+    public float GetHeight(Vector2Int pos) {
         return GetHeight(pos.x, pos.y);
     }
 
-    void Awake()
-    {
+    void Awake() {
         terrain = GetComponent<Terrain>();  //  находим террейн
         if (!GameConstants.IsMapEditorActive && (GameParams.MapType == MapTypes.DefaultMaps && GameParams.MapId != 0 ||
             GameParams.MapType != MapTypes.DefaultMaps))
@@ -81,8 +81,8 @@ public class TerrainHeightMap : MonoBehaviour {
         //    SaveHeightMap();
     }
 
-    private void SetTerrainData()
-    {
+    //Установка значений Террейна
+    private void SetTerrainData() {
         float[,] heightMap;
         if (GameParams.MapType == MapTypes.DefaultMaps)
             heightMap = LoadHeightMapFromFile();
@@ -95,8 +95,8 @@ public class TerrainHeightMap : MonoBehaviour {
             CreateMaze();
     }
 
-    private float[,] GenerateHeightMap()
-    {
+    // Генерация карты высот
+    private float[,] GenerateHeightMap() {
         float[,] result = new float[Length, Width];  //  создаем массив карты высот
         for (int y = 0; y < Length; y++)
             for (int x = 0; x < Width; x++)
@@ -105,18 +105,18 @@ public class TerrainHeightMap : MonoBehaviour {
         return result;
     }
 
-    private TerrainData GetTerrainData(TerrainData data, float[,] heightMap)
-    {
+    private TerrainData GetTerrainData(TerrainData data, float[,] heightMap) {
         data.heightmapResolution = Width + 1;  //  задаём разрешение карты высот
         data.size = new Vector3(Width, Height, Length);  //  задаём размеры террейна
         data.SetHeights(0, 0, heightMap);  //  присваиваем карту высот
         return data;
     }
 
+    //  Сохранение карты высот в файл
     private void SaveHeightMap()
     {
-        float [,] heightMap = terrain.terrainData.GetHeights(0, 0, Mathf.RoundToInt(terrain.terrainData.size.x), Mathf.RoundToInt(terrain.terrainData.size.z));
-        using (BinaryWriter writer = new BinaryWriter(File.Open(GameConstants.MapPath + GameConstants.MapEditorOutputFileName + 
+        float[,] heightMap = terrain.terrainData.GetHeights(0, 0, Mathf.RoundToInt(terrain.terrainData.size.x), Mathf.RoundToInt(terrain.terrainData.size.z));
+        using (BinaryWriter writer = new BinaryWriter(File.Open(GameConstants.MapPath + GameConstants.MapEditorOutputFileName +
             GameConstants.MapFileEtension, FileMode.CreateNew)))
         {
             writer.Write(Mathf.RoundToInt(terrain.terrainData.size.x)); // width
@@ -129,8 +129,8 @@ public class TerrainHeightMap : MonoBehaviour {
         }
     }
 
-    private float[,] LoadHeightMapFromFile()
-    {
+    //  Загрузка карты местности из файла
+    private float[,] LoadHeightMapFromFile() {
         float[,] result;
         using (BinaryReader reader = new BinaryReader(File.Open(GameParams.MapNames[GameParams.MapId-1], FileMode.Open)))
         {
@@ -146,8 +146,8 @@ public class TerrainHeightMap : MonoBehaviour {
         return result;
     }
 
-    private void CreateMaze()
-    {
+    //  Создание лабиринта
+    private void CreateMaze() {
         GameObject target;
         MazeGenerator generator = new MazeGenerator(Width, Length);
         bool [,] field = generator.GenerateMaze();

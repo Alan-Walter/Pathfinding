@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Класс, отвечающий за контроль нажатия клавиш
+/// </summary>
 public class KeyController : MonoBehaviour {
 	
 	// Update is called once per frame

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+/// <summary>
+/// Класс выделения объектов на игровой сцене
+/// </summary>
 public class SelectGameObject : MonoBehaviour {
 
     public static SelectGameObject Instance;

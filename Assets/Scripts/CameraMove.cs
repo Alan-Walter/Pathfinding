@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CameraMove : MonoBehaviour
-{
+/// <summary>
+/// Класс, отвечающий за перемещение камеры
+/// </summary>
+public class CameraMove : MonoBehaviour {
+    #region Поля
     private const int cameraMoveIndentSize = 5;  //  отступ от края экрана, в зоне которого начинается взаимодействие с перемещением
     private const float cameraMoveSize = 150.0f;  //  количество пунктов, на которое изменяется текущее положение/угол
-    private const float cameraRotatationSize = 60;
+    private const float cameraRotatationSize = 60;  //  кол-во пунктов, на которое изменится угол поворота камеры
     private const float cameraMoveY = 2.0f;  //  коэффициент увеличения скорости перемещения высоты камеры колёсиком мыши
 
     private float CameraMoveCoef
@@ -14,7 +17,7 @@ public class CameraMove : MonoBehaviour
         {
             return sceneCamera.transform.position.y * cameraMoveSize / GameConstants.CameraMaxHeight;
         }
-    }
+    }  //  Коэффициент скорости перемещения камеры в зависимости от высоты
 
     private Camera sceneCamera;  //  камера сцены
 
@@ -25,20 +28,18 @@ public class CameraMove : MonoBehaviour
     private float cameraCosMove;  //  перемещение камеры с учётом косинуса угла камеры
     private float cameraSinMove;  //  перемещение камеры с учётом синуса угла камеры
     private SelectGameObject selectGameObject;  //  объект, отвечающий за выделение объектов(юнитов) на экране
-
+    #endregion
     // Use this for initialization
-    void Start ()
-    {
+    void Start () {
         sceneCamera = Camera.main;  //  указываем на главную камеру сцены
         basicCameraRotation = sceneCamera.transform.rotation;  //  запоминаем углы камеры
         CalcMoveAngles();  //  вычисляем перемещение по сторонам относительно угла поворота камеры
         selectGameObject = GetComponent<SelectGameObject>();  //  получаем объект SelectGameObject
-        GameParams.GamePlayState = GamePlayState.Play;
+        GameParams.GamePlayState = GamePlayState.Play;  //  устанавливаем состояние игры на Play
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (GameParams.CameraState == CameraStates.Freeze || selectGameObject.IsSelectingObjects) return;
         mousePosition = Input.mousePosition;
         if (!Input.GetMouseButton(2))
@@ -89,9 +90,11 @@ public class CameraMove : MonoBehaviour
         }
     }
 
-    private void CalcMoveAngles()
-    {
-        cameraCosMove = Mathf.Cos(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad);  //  вычисляем синус и косинусы
+    /// <summary>
+    /// Функция, вычисляющая синус и косинус для правильного перемещения камеры над полем
+    /// </summary>
+    private void CalcMoveAngles() {
+        cameraCosMove = Mathf.Cos(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad);
         cameraSinMove = Mathf.Sin(sceneCamera.transform.eulerAngles.y * Mathf.Deg2Rad);
     }
 }
