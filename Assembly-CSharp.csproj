@@ -97,6 +97,7 @@
     <None Include="Assets\Import\OutlineEffect\Resources\OutlineShader.shader" />
     <None Include="Assets\Import\OutlineEffect\Resources\OutlineBufferShader.shader" />
     <None Include="Assets\Import\Circle\ProjectorAdditiveTint.shader" />
+    <None Include="ClassDiagram2.cd" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/my/Файлы/Универ/2 Курс/4 семестр/Практика/Practice Project/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

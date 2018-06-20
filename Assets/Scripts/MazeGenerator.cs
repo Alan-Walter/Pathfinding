@@ -91,7 +91,7 @@ public class MazeGenerator {
         return result;
     }
 
-    //  Метод получения непосещённый позиции
+    //  Метод получения не посещенной позиции
     private Vector2Int GetUnvisitedPosition() {
         for (int j = height - 2; j > 0; j--)
             for (int i = width - 2; i > 0; i--)

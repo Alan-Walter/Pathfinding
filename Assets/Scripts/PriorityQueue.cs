@@ -104,7 +104,7 @@ public class PriorityQueue<T>: ICollection<T> where T: IComparable {
     private void Heapify(int i)
     {
         int left, right, j;
-        while (2 * i + 1 < Count)    // heapSize — количество элементов в куче
+        while (2 * i + 1 < Count)
         {
             left = 2 * i + 1;             // left — левый сын
             right = 2 * i + 2;            // right — правый сын
