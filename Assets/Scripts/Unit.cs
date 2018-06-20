@@ -104,7 +104,7 @@ public class Unit : MonoBehaviour, ISelectObject, INavGridSpawn, INavGridMove, I
     }
 
     //  при уничтожении удаляется из множества юнитов
-    private void OnDestroy() {
+    void OnDestroy() {
         if(UnitManager.Instance != null)
             UnitManager.Instance.DeleteUnit(this);
     }

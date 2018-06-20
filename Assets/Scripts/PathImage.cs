@@ -11,6 +11,7 @@ public class PathImage {
 
     Vector2Int last;
 
+    //  Конструктор класса
     public PathImage(int width, int length) {
         texture = new Texture2D(width, length);
     }
@@ -20,6 +21,7 @@ public class PathImage {
         return image;
     }
 
+    //  Функция добавления координат на изображения
     public void Add(Vector2Int pos) {
         if (!isFirst)
         {

@@ -50,13 +50,7 @@ public class CompetitionMenuContols : MonoBehaviour {
             if (TerrainNavGrid.Instance.IsCellUsed(spawnPos)) return;
             if (GameParams.GamePlayState == GamePlayState.SelectStart)  //  если состояние - выбор старта
             {
-                if (startObject != null)
-                    Destroy(startObject.gameObject);
-                if (finishObject != null)
-                    Destroy(finishObject.gameObject);
-                finishObject = null;
-                startObject = Instantiate(StartPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
-                StartGridPosition = spawnPos;
+                SpawnStart(spawnPos);
                 //  спавн объекта зоны старта
             }
             else  //  если состояние - выбор финиша
@@ -74,16 +68,38 @@ public class CompetitionMenuContols : MonoBehaviour {
                     TipsControls.Instance.SetTipsText("Невозможно найти путь между стартом и финишом!");
                     return;
                 }
-                if (finishObject != null)
-                    Destroy(finishObject.gameObject);
-                finishObject = Instantiate(FinishPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
-                FinishGridPosition = spawnPos;
+                SpawnFinish(spawnPos);
                 //  спавн объекта зоны финиша
             }
             GameParams.GamePlayState = GamePlayState.SelectParams;
             TipsControls.Instance.SetTipsText("");
         }
 	}
+
+    /// <summary>
+    /// Метод спавна зоны старта
+    /// </summary>
+    /// <param name="spawnPos">Координаты на навигационной сетке</param>
+    private void SpawnStart(Vector2Int spawnPos) {
+        if (startObject != null)
+            Destroy(startObject.gameObject);
+        if (finishObject != null)
+            Destroy(finishObject.gameObject);
+        finishObject = null;
+        startObject = Instantiate(StartPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
+        StartGridPosition = spawnPos;
+    }
+
+    /// <summary>
+    /// Метод спавна зоны финиша
+    /// </summary>
+    /// <param name="spawnPos">Координаты спавна на навигационной сетке</param>
+    private void SpawnFinish(Vector2Int spawnPos) {
+        if (finishObject != null)
+            Destroy(finishObject.gameObject);
+        finishObject = Instantiate(FinishPrefab, new Vector3(spawnPos.x, 0, spawnPos.y), new Quaternion()) as GameObject;
+        FinishGridPosition = spawnPos;
+    }
 
     /// <summary>
     /// Метод нажатия кнопки спавна

@@ -16,13 +16,19 @@ public class MazeGenerator {
         new Vector2Int(-2, 0),
         new Vector2Int(2, 0)
     };
-
+    
+    /// <summary>
+    /// Конструктор класса генератора лабиринтов
+    /// </summary>
+    /// <param name="_width">Ширина лабиринта</param>
+    /// <param name="_height">Высота лабиринта</param>
     public MazeGenerator(int _width, int _height) {
         width = _width;
         height = _height;
         unvisitedCount = width * height;
     }
 
+    //  Функция генерации лабиринта, возвращает булевый массив занятых и свободных ячеек
     public bool [,] GenerateMaze() {
         Stack<Vector2Int> positions = new Stack<Vector2Int>();
         
@@ -52,6 +58,7 @@ public class MazeGenerator {
         return result;
     }
 
+    //  Метод предварительной обработки поля
     private void CreateMaze() {
         result = new bool[height, width];
         visited = new bool[height, width];
@@ -64,6 +71,7 @@ public class MazeGenerator {
                 }
     }
 
+    //  Метод удаления стены между двумя координатами
     private void RemoveWall(Vector2Int first, Vector2Int second) {
         Vector2Int diff = second - first;
         diff.x = diff.x != 0 ? diff.x / Mathf.Abs(diff.x) : 0;
@@ -71,6 +79,7 @@ public class MazeGenerator {
         result[first.y + diff.y, first.x + diff.x] = false;
     }
 
+    //  Метод получения соседей
     private List<Vector2Int> GetNeighbors(Vector2Int pos) {
         List<Vector2Int> result = new List<Vector2Int>();
         foreach(Vector2Int x in MoveArray)
@@ -82,6 +91,7 @@ public class MazeGenerator {
         return result;
     }
 
+    //  Метод получения непосещённый позиции
     private Vector2Int GetUnvisitedPosition() {
         for (int j = height - 2; j > 0; j--)
             for (int i = width - 2; i > 0; i--)
@@ -89,6 +99,7 @@ public class MazeGenerator {
         return new Vector2Int();
     }
 
+    //  установка позиции как посещенной
     private void SetVisitedPosition(Vector2Int position) {
         visited[position.y, position.x] = true;
         unvisitedCount--;

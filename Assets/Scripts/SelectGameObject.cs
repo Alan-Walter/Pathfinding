@@ -8,7 +8,7 @@ using System.Linq;
 /// </summary>
 public class SelectGameObject : MonoBehaviour {
 
-    public static SelectGameObject Instance;
+    public static SelectGameObject Instance { get; private set; }
     private List<ISelectObject> selectionList;
     private UnitManager unitManager;
     private Vector3 firstPoint;
@@ -87,22 +87,21 @@ public class SelectGameObject : MonoBehaviour {
         }
 	}
 
-    public static RaycastHit GetHitFromCursor()
-    {
+    //  получение RaycastHit под курсором
+    public static RaycastHit GetHitFromCursor() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         Physics.Raycast(ray, out hit);
         return hit;
     }
 
-    public void ClearSelectObjects()
-    {
+    //  снимает выделение всех объектов
+    public void ClearSelectObjects() {
         selectionList.ForEach(x => x.OnDeselectObject());
         selectionList.Clear();
     }
 
-    private void SelectUnitsInRectangle(Vector3 first, Vector3 second)
-    {
+    private void SelectUnitsInRectangle(Vector3 first, Vector3 second) {
         if (second.x < first.x)
             GlobalFunctions.Swap(ref first.x, ref second.x);
         if(second.y > first.y)

@@ -34,6 +34,8 @@ public class SpawnMenuControls : MonoBehaviour {
     public GameObject SpawnMenu;
 
     void Start() {
+        IsPlayerSpawnBuild = false;
+        IsPlayerSpawnUnit = false;
         unitButtonImage = UnitButton.GetComponent<Image>();
         buildButtonImage = BuildButton.GetComponent<Image>();
         if (GameParams.GameMode == GameModes.Sandbox)

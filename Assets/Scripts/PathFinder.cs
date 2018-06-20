@@ -101,10 +101,10 @@ public class PathFinder {
                     TerrainHeightMap.Instance.GetHeight(point.Position) + maxHeight) continue;
                 //  пропускает поинт, если он вне карты, занят или выше текущей позиции
 
-                float heightDist = TerrainHeightMap.Instance.GetHeight(movePoint.Position) - TerrainHeightMap.Instance.GetHeight(point.Position);
-                if (heightDist < 0) heightDist = 0;
+                //float heightDist = TerrainHeightMap.Instance.GetHeight(movePoint.Position) - TerrainHeightMap.Instance.GetHeight(point.Position);
+                //if (heightDist < 0) heightDist = 0;
                 movePoint.oldPoint = point;
-                movePoint.distance = GetDistance(movePoint.Position, finish) + heightDist;
+                movePoint.distance = GetDistance(movePoint.Position, finish)/* + heightDist*/;
                 if (scannedCells[movePoint.Position.x, movePoint.Position.y] )  //  если позиция просмотрена
                 {
                     if (queue.Contains(movePoint))  //  если в очереди уже есть такая позиция, то берётся ближайшая к финишу
